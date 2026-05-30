@@ -40,4 +40,4 @@ No test/lint/format scripts exist yet.
 
 ## Environment
 
-`.env` is committed (not in `.gitignore`) with dev defaults. Uses MySQL socket connection by default.
+`.env` is gitignored with dev defaults. See `.env.example` for required vars. Uses MySQL socket connection by default.
