@@ -1,0 +1,418 @@
+{
+  "info": {
+    "name": "Twitter Clone API",
+    "description": "A Twitter-style REST API with auth, tweets, follows, likes, and a paginated feed.\n\nBase URL: http://localhost:3000\n\nAuthentication: In-memory session tokens via Authorization: Bearer <token> header.\nAll endpoints except signup/signin require auth.\n\nResponse format:\n  Success: { \"data\": ... }\n  Error:   { \"error\": \"...\" }",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/auth/signup",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "signup"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_handle\": \"janedoe\",\n  \"email_address\": \"jane@example.com\",\n  \"first_name\": \"Jane\",\n  \"last_name\": \"Doe\",\n  \"phone_number\": \"1234567890\"\n}"
+            },
+            "description": "Create a new user account. Returns a session token.\n\nValidation: handle (max 50 chars), valid email, first/last name required, phone (10-15 digits, optional).\n\nResponse 201: { data: { session_token, user } }\nResponse 409: Email or handle already in use"
+          }
+        },
+        {
+          "name": "Sign In",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/auth/signin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "signin"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email_address\": \"jane@example.com\"\n}"
+            },
+            "description": "Sign in with email. No password — email-only auth.\n\nResponse 200: { data: { session_token, user } }\nResponse 401: Invalid credentials"
+          }
+        },
+        {
+          "name": "Sign Out",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/auth/signout",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "auth", "signout"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Destroy the current session token.\n\nResponse 200: { data: { message: \"Signed out\" } }"
+          }
+        }
+      ],
+      "description": "Authentication endpoints. Sessions are stored in-memory — restarting the server invalidates all tokens."
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/users/{{user_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "users", "{{user_id}}"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Get a user's public profile.\n\nResponse 200: { data: User }\nResponse 404: User not found"
+          }
+        },
+        {
+          "name": "Get Followers",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/users/{{user_id}}/followers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "users", "{{user_id}}", "followers"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Get the list of users following the specified user.\n\nResponse 200: { data: User[] }\nResponse 404: User not found"
+          }
+        },
+        {
+          "name": "Get Following",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/users/{{user_id}}/following",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "users", "{{user_id}}", "following"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Get the list of users the specified user is following.\n\nResponse 200: { data: User[] }\nResponse 404: User not found"
+          }
+        }
+      ],
+      "description": "User profile and relationship endpoints. All require authentication."
+    },
+    {
+      "name": "Tweets",
+      "item": [
+        {
+          "name": "Create Tweet",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/tweets",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tweets"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tweet_text\": \"Hello, world! This is my first tweet.\"\n}"
+            },
+            "description": "Create a new tweet (max 280 characters).\n\nResponse 201: { data: Tweet }\nResponse 400: Validation error"
+          }
+        },
+        {
+          "name": "Delete Tweet",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tweets", "{{tweet_id}}"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Delete a tweet. Only the tweet author can delete.\n\nResponse 200: { data: { message: \"Tweet deleted\" } }\nResponse 403: Not the owner\nResponse 404: Tweet not found"
+          }
+        },
+        {
+          "name": "Like Tweet",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/like",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tweets", "{{tweet_id}}", "like"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Like a tweet.\n\nResponse 201: { data: { message: \"Tweet liked\" } }\nResponse 404: Tweet not found\nResponse 409: Already liked"
+          }
+        },
+        {
+          "name": "Unlike Tweet",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/like",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tweets", "{{tweet_id}}", "like"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Remove a like from a tweet.\n\nResponse 200: { data: { message: \"Tweet unliked\" } }\nResponse 404: Like not found"
+          }
+        },
+        {
+          "name": "Get Tweet Likes",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/likes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "tweets", "{{tweet_id}}", "likes"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Get the list of users who liked a tweet.\n\nResponse 200: { data: User[] }\nResponse 404: Tweet not found"
+          }
+        }
+      ],
+      "description": "Tweet CRUD and like operations. All require authentication."
+    },
+    {
+      "name": "Follows",
+      "item": [
+        {
+          "name": "Follow User",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "http://localhost:3000/api/followers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "followers"]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"following_id\": 2\n}"
+            },
+            "description": "Follow another user. Cannot follow yourself.\n\nResponse 201: { data: { message: \"Now following user\" } }\nResponse 400: Cannot follow self\nResponse 404: Target user not found\nResponse 409: Already following"
+          }
+        },
+        {
+          "name": "Unfollow User",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "http://localhost:3000/api/followers/{{following_id}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "followers", "{{following_id}}"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Unfollow a user.\n\nResponse 200: { data: { message: \"Unfollowed user\" } }\nResponse 404: Follow relationship not found"
+          }
+        }
+      ],
+      "description": "Follow/unfollow operations. All require authentication."
+    },
+    {
+      "name": "Feed",
+      "item": [
+        {
+          "name": "Get Feed",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/feed?limit=20&offset=0",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "3000",
+              "path": ["api", "feed"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20",
+                  "description": "Number of tweets to return (1-100, default 20)"
+                },
+                {
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Number of tweets to skip (default 0)"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "Get a paginated feed of tweets from users you follow.\n\nResponse 200: { data: Tweet[] }\n\nPagination: limit is clamped to 1-100, offset defaults to 0."
+          }
+        }
+      ],
+      "description": "The feed endpoint returns tweets from followed users, newest first."
+    }
+  ],
+  "variable": [
+    {
+      "key": "session_token",
+      "value": "",
+      "type": "string",
+      "description": "Session token obtained from signup or signin. Will be auto-set via the test script after signin."
+    },
+    {
+      "key": "user_id",
+      "value": "1",
+      "type": "string",
+      "description": "The numeric user ID to look up (e.g. from the signup/signin response)"
+    },
+    {
+      "key": "tweet_id",
+      "value": "1",
+      "type": "string",
+      "description": "The numeric tweet ID to act on"
+    },
+    {
+      "key": "following_id",
+      "value": "2",
+      "type": "string",
+      "description": "The numeric user ID to follow/unfollow"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          ""
+        ],
+        "type": "text/javascript"
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "exec": [
+          "// Auto-set session_token and user_id from signup/signin responses",
+          "if (pm.response.code === 201 || pm.response.code === 200) {",
+          "  const body = pm.response.json();",
+          "  if (body.data?.session_token) {",
+          "    pm.collectionVariables.set('session_token', body.data.session_token);",
+          "  }",
+          "  if (body.data?.user?.user_id) {",
+          "    pm.collectionVariables.set('user_id', String(body.data.user.user_id));",
+          "  }",
+          "}"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ]
+}
