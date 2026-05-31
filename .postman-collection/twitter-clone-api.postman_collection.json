@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Twitter Clone API",
-    "description": "A Twitter-style REST API with auth, tweets, follows, likes, and a paginated feed.\n\nBase URL: http://localhost:3000\n\nAuthentication: In-memory session tokens via Authorization: Bearer <token> header.\nAll endpoints except signup/signin require auth.\n\nResponse format:\n  Success: { \"data\": ... }\n  Error:   { \"error\": \"...\" }",
+    "description": "A Twitter-style REST API with auth, tweets, follows, likes, and a paginated feed.\n\nBase URL: http://localhost:{{PORT}}\n\nAuthentication: In-memory session tokens via Authorization: Bearer <token> header.\nAll endpoints except signup/signin require auth.\n\nResponse format:\n  Success: { \"data\": ... }\n  Error:   { \"error\": \"...\" }",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -13,10 +13,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/auth/signup",
+              "raw": "http://localhost:{{PORT}}/api/auth/signup",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "auth", "signup"]
             },
             "header": [
@@ -37,10 +37,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/auth/signin",
+              "raw": "http://localhost:{{PORT}}/api/auth/signin",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "auth", "signin"]
             },
             "header": [
@@ -61,10 +61,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/auth/signout",
+              "raw": "http://localhost:{{PORT}}/api/auth/signout",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "auth", "signout"]
             },
             "header": [
@@ -91,10 +91,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:3000/api/users/{{user_id}}",
+              "raw": "http://localhost:{{PORT}}/api/users/{{user_id}}",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "users", "{{user_id}}"]
             },
             "header": [
@@ -111,10 +111,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:3000/api/users/{{user_id}}/followers",
+              "raw": "http://localhost:{{PORT}}/api/users/{{user_id}}/followers",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "users", "{{user_id}}", "followers"]
             },
             "header": [
@@ -131,10 +131,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:3000/api/users/{{user_id}}/following",
+              "raw": "http://localhost:{{PORT}}/api/users/{{user_id}}/following",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "users", "{{user_id}}", "following"]
             },
             "header": [
@@ -157,10 +157,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/tweets",
+              "raw": "http://localhost:{{PORT}}/api/tweets",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "tweets"]
             },
             "header": [
@@ -185,10 +185,10 @@
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}",
+              "raw": "http://localhost:{{PORT}}/api/tweets/{{tweet_id}}",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "tweets", "{{tweet_id}}"]
             },
             "header": [
@@ -205,10 +205,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/like",
+              "raw": "http://localhost:{{PORT}}/api/tweets/{{tweet_id}}/like",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "tweets", "{{tweet_id}}", "like"]
             },
             "header": [
@@ -229,10 +229,10 @@
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/like",
+              "raw": "http://localhost:{{PORT}}/api/tweets/{{tweet_id}}/like",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "tweets", "{{tweet_id}}", "like"]
             },
             "header": [
@@ -249,10 +249,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:3000/api/tweets/{{tweet_id}}/likes",
+              "raw": "http://localhost:{{PORT}}/api/tweets/{{tweet_id}}/likes",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "tweets", "{{tweet_id}}", "likes"]
             },
             "header": [
@@ -275,10 +275,10 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "http://localhost:3000/api/followers",
+              "raw": "http://localhost:{{PORT}}/api/followers",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "followers"]
             },
             "header": [
@@ -303,10 +303,10 @@
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "http://localhost:3000/api/followers/{{following_id}}",
+              "raw": "http://localhost:{{PORT}}/api/followers/{{following_id}}",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "followers", "{{following_id}}"]
             },
             "header": [
@@ -329,10 +329,10 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "http://localhost:3000/api/feed?limit=20&offset=0",
+              "raw": "http://localhost:{{PORT}}/api/feed?limit=20&offset=0",
               "protocol": "http",
               "host": ["localhost"],
-              "port": "3000",
+              "port": "{{PORT}}",
               "path": ["api", "feed"],
               "query": [
                 {
@@ -361,6 +361,12 @@
     }
   ],
   "variable": [
+    {
+      "key": "PORT",
+      "value": "4000",
+      "type": "string",
+      "description": "Server port (default 4000)"
+    },
     {
       "key": "session_token",
       "value": "",
