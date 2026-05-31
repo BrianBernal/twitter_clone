@@ -13,15 +13,25 @@ export interface AppConfig {
   validationFlags: Record<string, boolean>;
 }
 
+const {
+  PORT = '4000',
+  DB_HOST = '127.0.0.1',
+  DB_PORT = '3306',
+  DB_USER = 'root',
+  DB_PASSWORD = '',
+  DB_NAME = 'twitter_db',
+  DB_SOCKET = '/tmp/mysql_3306.sock',
+} = process.env;
+
 const config: AppConfig = {
-  port: parseInt(process.env.PORT || '3000', 10),
+  port: parseInt(PORT, 10),
   db: {
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: parseInt(process.env.DB_PORT || '3306', 10),
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'twitter_db',
-    socketPath: process.env.DB_SOCKET || '/tmp/mysql_3306.sock',
+    host: DB_HOST,
+    port: parseInt(DB_PORT, 10),
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME,
+    socketPath: DB_SOCKET,
   },
   validationFlags: {
     'POST /api/auth/signup': true,
