@@ -12,3 +12,6 @@ yarn-error.log*
 *.pem
 coverage/
 .nyc_output/
+
+# app (frontend) generated files
+app/src/routeTree.gen.ts

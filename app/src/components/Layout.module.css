@@ -1,0 +1,35 @@
+.header {
+  background: #1da1f2;
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.header nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+.main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
