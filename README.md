@@ -15,6 +15,18 @@ pnpm install
 cp .env.example .env
 ```
 
+Create the database and tables:
+
+```bash
+mysql -u root < src/config/sql_schema.sql
+```
+
+Optionally load mock data:
+
+```bash
+mysql -u root < src/config/sql_mock_data.sql
+```
+
 ## Development
 
 ```bash
@@ -49,6 +61,7 @@ All endpoints return `{ data: ... }` on success and `{ error: "..." }` on failur
 | GET    | /api/users/:id           | Get user profile    |
 | GET    | /api/users/:id/followers | Get followers list  |
 | GET    | /api/users/:id/following | Get following list  |
+| GET    | /api/getAllUsers         | List all users      |
 
 ### Tweets
 
