@@ -145,6 +145,26 @@
             ],
             "description": "Get the list of users the specified user is following.\n\nResponse 200: { data: User[] }\nResponse 404: User not found"
           }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:{{PORT}}/api/getAllUsers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "{{PORT}}",
+              "path": ["api", "getAllUsers"]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{session_token}}"
+              }
+            ],
+            "description": "List every registered user.\n\nResponse 200: { data: User[] }"
+          }
         }
       ],
       "description": "User profile and relationship endpoints. All require authentication."

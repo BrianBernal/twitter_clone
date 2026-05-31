@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { findUserById } from '../models/userModel.js';
+import { findAllUsers, findUserById } from '../models/userModel.js';
 import { getFollowers, getFollowing } from '../models/followModel.js';
 
 export async function getProfile(req: Request, res: Response): Promise<void> {
@@ -46,5 +46,15 @@ export async function getFollowingList(req: Request, res: Response): Promise<voi
   } catch (err) {
     console.error('getFollowingList error:', err);
     res.status(500).json({ error: 'Failed to get following list' });
+  }
+}
+
+export async function getAllUsers(_req: Request, res: Response): Promise<void> {
+  try {
+    const users = await findAllUsers();
+    res.json({ data: users });
+  } catch (err) {
+    console.error('getAllUsers error:', err);
+    res.status(500).json({ error: 'Failed to get users' });
   }
 }

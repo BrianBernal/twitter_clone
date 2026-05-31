@@ -26,6 +26,11 @@ export async function findUserById(id: number): Promise<User | null> {
   return rows.length ? (rows[0] as User) : null;
 }
 
+export async function findAllUsers(): Promise<User[]> {
+  const [rows] = await getPool().execute<RowDataPacket[]>('SELECT * FROM users');
+  return rows as User[];
+}
+
 export async function createUser(data: {
   user_handle: string;
   email_address: string;
