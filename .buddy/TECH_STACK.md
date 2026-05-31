@@ -6,37 +6,47 @@
 
 ## Languages
 
-- **TypeScript** (all source code in `src/`)
+- **TypeScript** (all source code in `api/` and `app/`)
 - **ECMAScript 2022** (`"target": "ES2022"` in tsconfig)
-- **ESM** (`"type": "module"` in package.json — local imports use `.js` extensions)
+- **ESM** (`"type": "module"` in both workspaces — local imports use `.js` extensions)
 
-## Frameworks & libraries
+## Backend (`api/`)
 
-| Technology | What it's used for | File |
-|---|---|---|
-| **Express** (^4.21) | HTTP server, routing, middleware | `package.json` |
-| **mysql2** (^3.11) | MySQL database driver (with `Promise` API) | `package.json` |
+| Technology | What it's used for |
+|------------|-------------------|
+| **Express** (^4.21) | HTTP server, routing, middleware |
+| **mysql2** (^3.11) | MySQL database driver (with `Promise` API) |
+
+## Frontend (`app/`)
+
+| Technology | What it's used for |
+|------------|-------------------|
+| **React** (^19.2) | UI library |
+| **Vite** (^8.0) | Build tool and dev server with HMR |
+| **TanStack Router** (^1.170) | File-based routing |
+| **TanStack Query** (^5.100) | Server state — fetching, caching, mutations |
+| **CSS Modules** | Scoped component styles (`*.module.css`) |
 
 ## Build & package
 
 | Tool | Purpose |
-|---|---|
-| **TypeScript** (`tsc`) | Compiles `.ts` → `.js` to `dist/` |
-| **tsx** (^4.19) | Dev server with hot reload (`tsx watch src/index.ts`) |
-| **pnpm** | Package manager (faster than npm) |
+|------|---------|
+| **TypeScript** (`tsc`) | Compiles `.ts` → `.js` |
+| **tsx** (^4.19) | API dev server with hot reload |
+| **Vite** (^8.0) | App dev server + production build |
+| **pnpm** | Package manager (workspaces) |
 
 ## Tests
 
-**None yet.** There are no test files, no test framework, no test scripts defined.
+**None yet.** No test files, no test framework, no test scripts defined.
 
 ## CI / Deploy
 
-**None yet.** No CI config files found (`.github/` folder exists but no workflow files — it just has `FUNDING.yml` and `.keep`).
+**None yet.** No CI config files found.
 
 ## Key TypeScript config details
 
 | Setting | Value | Why it matters |
-|---|---|---|
-| `moduleResolution` | `bundler` | Lets you use `.js` extensions in imports (tsx & tsc both support this) |
+|---------|-------|----------------|
+| `moduleResolution` | `bundler` | Lets you use `.js` extensions in imports |
 | `strict` | `true` | Full type checking enabled |
-| `outDir` | `./dist` | Compiled JS goes here |

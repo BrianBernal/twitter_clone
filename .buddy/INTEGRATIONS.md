@@ -9,7 +9,7 @@
 This is the **only** external service the project connects to.
 
 | Detail | Value |
-|---|---|
+|--------|-------|
 | Driver | `mysql2` (with Promise API) |
 | Connection | Connection pool, lazy-initialized on first query |
 | Default host | `127.0.0.1` (or Unix socket at `/tmp/mysql_3306.sock`) |
@@ -18,31 +18,35 @@ This is the **only** external service the project connects to.
 
 ### Where configured
 
-- **Environment variables:** `.env` file (gitignored) — see `.env.example` for template (default `PORT` is now `4000`)
-- **Pool setup:** `src/config/index.ts` — `getPool()` function creates the pool
-- **Connection details:** Read from `process.env` at startup (destructured at top of `src/config/index.ts`)
-- **Schema definition:** `src/config/sql_schema.sql` — run this to create database + tables
-- **Mock data:** `src/config/sql_mock_data.sql` — optional seed data for development
+- **Environment variables:** `api/.env` file (gitignored) — see `.env.example` for template
+- **Pool setup:** `api/src/config/index.ts` — `getPool()` function creates the pool
+- **Connection details:** Read from `process.env` at startup
+- **Schema definition:** `api/src/config/sql_schema.sql`
+- **Mock data:** `api/src/config/sql_mock_data.sql`
 
 ### Tables used
 
-| Table | Purpose | Created by |
-|---|---|---|---|
-| `users` | User profiles (handle, name, email, follower_count) | `src/config/sql_schema.sql` (run via `mysql -u root < src/config/sql_schema.sql`) |
-| `tweets` | Tweet content, likes count, author | Same schema file — FK `ON DELETE CASCADE` to `users` |
-| `followers` | Who follows whom | Same schema file — both FKs `ON DELETE CASCADE` |
-| `tweet_likes` | Who liked which tweet | Same schema file — both FKs `ON DELETE CASCADE` |
+| Table | Purpose |
+|-------|---------|
+| `users` | User profiles (handle, name, email, follower_count) |
+| `tweets` | Tweet content, likes count, author |
+| `followers` | Who follows whom |
+| `tweet_likes` | Who liked which tweet |
 
 ## Auth
 
-**No external auth provider.** Sessions are completely in-memory using `crypto.randomUUID()` tokens stored in a `Map<string, number>` in `src/middleware/auth.ts`. No JWT, no OAuth, no bcrypt.
+**No external auth provider.** Sessions are completely in-memory using `crypto.randomUUID()` tokens stored in a `Map<string, number>` in `api/src/middleware/auth.ts`. No JWT, no OAuth, no bcrypt.
+
+## Frontend API client
+
+The `app/` workspace talks to the API via a plain `fetch` wrapper at `app/src/api/client.ts`. It reads the auth token from `localStorage` and injects it as `Authorization: Bearer`. During development, Vite proxies `/api/**` requests to `http://localhost:4000`.
 
 ## Secrets & env vars
 
-All secrets live in `.env` at the repo root (gitignored). Template in `.env.example`.
+All secrets live in `api/.env` (gitignored). Template in `api/.env.example`.
 
 | Variable | Type | Secret? |
-|---|---|---|
+|----------|------|---------|
 | `PORT` | number | No |
 | `DB_HOST` | string | No |
 | `DB_PORT` | number | No |

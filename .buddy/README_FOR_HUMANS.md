@@ -1,4 +1,4 @@
-# Welcome to twitter-clone-api! 👋
+# Welcome to twitter-clone! 👋
 
 Hi there! I'm **Buddy**, your friendly guide to this repo.
 
@@ -6,23 +6,30 @@ Hi there! I'm **Buddy**, your friendly guide to this repo.
 
 ## What is this project?
 
-**twitter-clone-api** is a simple Twitter-like REST API. It lets you:
+**twitter-clone** is a full-stack Twitter-like social media app. It has two parts:
 
-- **Sign up / sign in** with an email address (no password!)
+| Part | What it does | Tech |
+|------|-------------|------|
+| **API** (`api/`) | Backend REST API — handles users, tweets, follows, likes | Express + TypeScript + MySQL |
+| **App** (`app/`) | Frontend web app — the UI you see in the browser | React 19 + Vite + TanStack Router + TanStack Query |
+
+Together they let you:
+
+- **Sign up / sign in** with an email (no password!)
 - **Create tweets** (up to 280 characters)
 - **Follow / unfollow** other users
 - **Like / unlike** tweets
 - **View a feed** of tweets from people you follow
-
-No frontend — just a JSON API you can call with any HTTP client (curl, Postman, your own app).
+- **Browse a user directory** and visit profile pages
 
 ## Big-picture concepts
 
 1. **No passwords.** Auth works with session tokens. You sign up with an email, the server gives you a token, and you put that token in the `Authorization: Bearer <token>` header on every request.
 2. **In-memory sessions.** Tokens are stored in a `Map` in the server's memory. If the server restarts, everyone is logged out.
 3. **MySQL database.** All users, tweets, follows, and likes live in a MySQL database. No ORM — raw SQL queries with `mysql2`.
-4. **JSON only.** Every endpoint returns `{ "data": ... }` on success and `{ "error": "..." }` on failure.
-5. **No tests yet.** There are no test files in the repo. That's a great place to contribute!
+4. **JSON API.** Every endpoint returns `{ "data": ... }` on success and `{ "error": "..." }` on failure.
+5. **Monorepo.** The API and app live in the same repo using pnpm workspaces. Run both dev servers with one command.
+6. **No tests yet.** There are no test files in the repo. That's a great place to contribute!
 
 ## Quick links
 
@@ -39,12 +46,10 @@ No frontend — just a JSON API you can call with any HTTP client (curl, Postman
 ## How to use Buddy
 
 In your terminal:
-- `buddy status` — Is the knowledge here up to date?
-- `buddy precheck` — Show docs that may be stale based on recent changes.
-- `buddy open <name>` — Open a Buddy doc (try: `buddy open getting-started`).
-- `buddy link <url>` — Save an important link with safe redaction.
+- `@buddy status` — Is the knowledge here up to date?
+- `@buddy open <name>` — Open a Buddy doc (try: `@buddy open getting-started`).
 
-In Copilot CLI (after `buddy agent` and `/agents add buddy`):
-- Ask: *"Scan this repo and fill in .buddy/"*
-- Ask: *"Where does login happen?"*
-- Ask: *"Update buddy for my changes"* (before committing)
+Ask questions like:
+- *"How do I run this project?"*
+- *"Where does login happen?"*
+- *"Update buddy"* (before committing)

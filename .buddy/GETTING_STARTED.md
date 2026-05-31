@@ -6,23 +6,23 @@
 
 ## Prerequisites
 
-- **Node.js** v18 or newer (uses ES2022 features)
+- **Node.js** v18 or newer
 - **pnpm** — the package manager (install: `npm install -g pnpm`)
 - **MySQL** — running locally on port 3306 (or via socket at `/tmp/mysql_3306.sock`)
 
 ## Database setup
 
-This project expects a MySQL database. The schema file lives in the repo now.
+This project expects a MySQL database named `twitter_db`.
 
 1. Make sure MySQL is running.
 
-2. Create the database and tables (one command):
+2. Create the database and tables:
 
 ```bash
-mysql -u root < src/config/sql_schema.sql
+mysql -u root < api/src/config/sql_schema.sql
 ```
 
-This runs `src/config/sql_schema.sql` which:
+This runs `api/src/config/sql_schema.sql` which:
 - Creates `twitter_db` if it doesn't exist
 - Creates `users`, `tweets`, `followers`, `tweet_likes` tables
 - Adds indexes and foreign keys with `ON DELETE CASCADE`
@@ -30,7 +30,7 @@ This runs `src/config/sql_schema.sql` which:
 3. (Optional) Load mock data to play with:
 
 ```bash
-mysql -u root < src/config/sql_mock_data.sql
+mysql -u root < api/src/config/sql_mock_data.sql
 ```
 
 This adds 5 users, 15 tweets, likes, and follow relationships so you can test the API right away.
@@ -45,14 +45,14 @@ pnpm install
 
 ```bash
 # Copy the example .env file (it already has good defaults)
-cp .env.example .env
+cp api/.env.example api/.env
 ```
 
-Edit `.env` to match your MySQL setup if needed:
+Edit `api/.env` to match your MySQL setup if needed:
 
 | Variable      | Default                 | What it is                 |
 |---------------|-------------------------|----------------------------|
-| `PORT`        | 4000                    | Port the server listens on |
+| `PORT`        | 4000                    | Port the API listens on    |
 | `DB_HOST`     | 127.0.0.1               | MySQL host                 |
 | `DB_PORT`     | 3306                    | MySQL port                 |
 | `DB_USER`     | root                    | MySQL user                 |
@@ -66,7 +66,18 @@ Edit `.env` to match your MySQL setup if needed:
 pnpm dev
 ```
 
-This starts the server with hot reload at `http://localhost:4000`. Any file changes auto-restart the server.
+This starts **both** the API and App dev servers:
+- **API** at `http://localhost:4000` (hot reload via `tsx watch`)
+- **App** at `http://localhost:5173` (Vite HMR — opens in browser)
+
+The Vite dev server proxies `/api/**` requests to `http://localhost:4000`, so you only need to open the app URL.
+
+### Running just one
+
+```bash
+pnpm dev:api     # API only (port 4000)
+pnpm dev:app     # App only (port 5173)
+```
 
 ## Build for production
 
@@ -74,7 +85,9 @@ This starts the server with hot reload at `http://localhost:4000`. Any file chan
 pnpm build
 ```
 
-Compiles TypeScript to JavaScript in the `dist/` folder.
+Compiles both workspaces:
+- API: TypeScript → `api/dist/`
+- App: Vite build + TypeScript → `app/dist/`
 
 ## Run production build
 
@@ -82,11 +95,7 @@ Compiles TypeScript to JavaScript in the `dist/` folder.
 pnpm start
 ```
 
-Runs `node dist/index.js` — only works after `pnpm build`.
-
-## Run tests
-
-There are **no test scripts yet** in this project. Good first contribution?
+Runs `node api/dist/index.js` (API only — the app is served by Vite in dev or a static server in production).
 
 ## Quick smoke test (using curl)
 
@@ -114,17 +123,17 @@ curl -X POST http://localhost:4000/api/tweets \
 
 | Problem | Likely fix |
 |---------|-----------|
-| `ECONNREFUSED` on MySQL | Make sure MySQL is running. Check `DB_HOST`, `DB_PORT` in `.env`. |
-| `Unknown database 'twitter_db'` | Run `mysql -u root < src/config/sql_schema.sql` to create the database and tables. |
+| `ECONNREFUSED` on MySQL | Make sure MySQL is running. Check `DB_HOST`, `DB_PORT` in `api/.env`. |
+| `Unknown database 'twitter_db'` | Run `mysql -u root < api/src/config/sql_schema.sql` to create the database and tables. |
 | `ERR_MODULE_NOT_FOUND` for `.js` imports | This is an ESM project. All local imports use `.js` extensions. That's correct — `tsx` and `tsc` handle the `.ts` → `.js` mapping. |
 | `SyntaxError` on startup | Make sure you have Node 18+ (uses `crypto.randomUUID()`). |
 
 ## Where things live
 
-- **Config:** `.env` (gitignored) + `src/config/index.ts`
-- **Source code:** All TypeScript in `src/`
-- **Built output:** `dist/` (gitignored)
-- **Database schema:** `src/config/sql_schema.sql` (run with `mysql -u root < src/config/sql_schema.sql`)
-- **Mock data:** `src/config/sql_mock_data.sql` (optional, for testing)
-- **API testing:** `.postman-collection/twitter-clone-api.postman_collection.json` — import into Postman
-- **Agent configs:** `.claude/agents/buddy.md`, `.github/agents/buddy.md`, `.opencode/agents/buddy.md`
+- **API config:** `api/.env` (gitignored) + `api/src/config/index.ts`
+- **Backend source:** TypeScript in `api/src/`
+- **Frontend source:** TypeScript/React in `app/src/`
+- **Database schema:** `api/src/config/sql_schema.sql`
+- **Mock data:** `api/src/config/sql_mock_data.sql`
+- **API testing:** `.postman-collection/twitter-clone-api.postman_collection.json`
+- **Agent configs:** `.opencode/agents/buddy.md`
