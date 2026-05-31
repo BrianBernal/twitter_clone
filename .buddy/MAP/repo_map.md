@@ -12,19 +12,21 @@
 |---|---|
 | `package.json` | Project config, scripts, dependencies |
 | `tsconfig.json` | TypeScript compiler settings |
-| `.env` / `.env.example` | Environment variables (DB config, port) |
+| `.env` / `.env.example` | Environment variables (DB config, port) — default PORT now `4000` |
 | `AGENTS.md` | Quick-reference for AI agents & contributors |
+| `README.md` | Project README with setup instructions and API reference |
 | `pnpm-lock.yaml` | Lockfile — don't edit manually |
 
 ## Top-level folders
 
 | Folder | Purpose | Start here? |
-|---|---|---|
+|---|---|---|---|
 | `src/` | **All source code** | ✅ **Yes — this is where everything lives** |
 | `.buddy/` | AI agent knowledge base | ℹ️ Read if you want repo docs |
-| `.claude/` | Claude AI config | Ignore unless you use Claude |
-| `.opencode/` | Opencode AI config | Ignore unless you use Opencode |
-| `.github/` | GitHub templates/CI (currently empty) | Ignore for now |
+| `.claude/` | Claude AI agent config (Buddy) | ℹ️ Read if you use Claude |
+| `.opencode/` | Opencode AI agent config (Buddy) | ℹ️ Read if you use Opencode |
+| `.github/` | GitHub agent config (Buddy) + templates | ℹ️ Read if you use GitHub |
+| `.postman-collection/` | Postman API collection for all endpoints | 🔧 Use for API testing |
 | `node_modules/` | Dependencies (gitignored) | Never touch |
 | `dist/` | Compiled JS output (gitignored) | Never touch |
 
@@ -37,7 +39,7 @@
 | `models/` | SQL queries — the database layer | `userModel.ts`, `tweetModel.ts`, `followModel.ts`, `likeModel.ts` |
 | `middleware/` | Auth, validation, error handling | `auth.ts`, `validation.ts`, `errorHandler.ts` |
 | `validators/` | Per-route input validation functions | `authValidator.ts`, `tweetValidator.ts`, `helpers.ts` |
-| `config/` | App config, DB pool, validation flags | `index.ts` |
+| `config/` | App config, DB pool, validation flags, schema + mock data | `index.ts`, `sql_schema.sql`, `sql_mock_data.sql` |
 | `types/` | Shared TypeScript interfaces | `index.ts` |
 | `app.ts` | Express app setup (routes, middleware) | Entry point for the app |
 | `index.ts` | Server startup (listens on PORT) | Entry point for the server |

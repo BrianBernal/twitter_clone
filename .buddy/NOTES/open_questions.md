@@ -6,21 +6,24 @@
 
 > Things Buddy couldn't figure out from the repo alone. Help fill these in!
 
-## Database schema
+## ✅ Recently answered
 
-- What does the full `users` table schema look like? I can see the columns from the types and queries, but I haven't seen the actual `CREATE TABLE` statement. (See `src/types/index.ts` and `src/models/userModel.ts`)
-- Are there any indexes beyond the primary keys?
-- Are there any foreign key constraints with `ON DELETE CASCADE`?
+These questions were answered by the 9 new commits between `1f9923b` and `69e6209`:
+- **Database schema** — now answered by `src/config/sql_schema.sql` (full CREATE TABLE with indexes and `ON DELETE CASCADE`)
+- **Indexes** — yes: `idx_user_id`, `idx_following_id`, `idx_tweet_id`
+- **Foreign key CASCADE** — yes: all foreign keys use `ON DELETE CASCADE`
+- **Database migration approach** — manual SQL via `src/config/sql_schema.sql` is the intended approach
+- **Port default** — changed from `3000` to `4000`
 
 ## Missing pieces
 
 - Are there any plans for testing? What test framework would be preferred?
-- Is there a planned CI pipeline? (`.github/` folder exists but only has `FUNDING.yml`)
+- Is there a planned CI pipeline? (`.github/` folder has no workflow files)
 - Are there any lint or formatting conventions (ESLint, Prettier)?
-- Should there be database migration files, or is manual SQL the intended approach?
+- Should there be password/authentication improvements (bcrypt, JWT)?
 
 ## API design
 
 - Should there be rate limiting?
-- Should there be any password/authentication improvements (bcrypt, JWT)?
 - Is there any OpenAPI / Swagger documentation planned?
+- Should the Postman collection be version-controlled and maintained as the API spec?

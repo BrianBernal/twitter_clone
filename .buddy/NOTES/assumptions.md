@@ -9,13 +9,12 @@
 ## Database
 
 - I assume the MySQL connection via socket path works on this machine. The default socket path is `/tmp/mysql_3306.sock`. If that's wrong, set a different `DB_SOCKET` in `.env` or use TCP (`DB_HOST` / `DB_PORT`) instead.
-- I assume the database tables are already created or will be created manually. There are no migration or schema files in the repo.
 - I assume the column names in the types (`src/types/index.ts`) match the actual database column names exactly.
 
 ## Development
 
 - I assume `pnpm` is the package manager (from `package.json` and `pnpm-lock.yaml`).
-- I assume the dev server runs on port 3000 by default (from `.env.example`).
+- I assume the dev server runs on port 4000 by default (from `.env.example` and `src/config/index.ts`).
 
 ## Project intent
 
