@@ -1,6 +1,6 @@
-# Twitter Clone API
+# Twitter Clone
 
-A Twitter-like REST API built with Express, TypeScript, and MySQL.
+A full-stack Twitter-like social media app with an Express + MySQL API backend and a React frontend.
 
 ## Prerequisites
 
@@ -12,28 +12,37 @@ A Twitter-like REST API built with Express, TypeScript, and MySQL.
 
 ```bash
 pnpm install
-cp .env.example .env
+cp api/.env.example api/.env
 ```
 
 Create the database and tables:
 
 ```bash
-mysql -u root < src/config/sql_schema.sql
+mysql -u root < api/src/config/sql_schema.sql
 ```
 
 Optionally load mock data:
 
 ```bash
-mysql -u root < src/config/sql_mock_data.sql
+mysql -u root < api/src/config/sql_mock_data.sql
 ```
 
 ## Development
+
+Start both the API and App dev servers:
 
 ```bash
 pnpm dev
 ```
 
-Starts the dev server with hot reload on `http://localhost:3000`.
+Or run them individually:
+
+| Command | What it starts | URL |
+|---------|---------------|-----|
+| `pnpm dev:api` | Express API with hot reload | `http://localhost:4000` |
+| `pnpm dev:app` | Vite React app with HMR | `http://localhost:5173` |
+
+The Vite dev server proxies `/api/**` requests to the Express API.
 
 ## Build & Start
 
@@ -41,6 +50,15 @@ Starts the dev server with hot reload on `http://localhost:3000`.
 pnpm build
 pnpm start
 ```
+
+Builds both workspaces. `pnpm start` runs the compiled API server.
+
+## Project Structure
+
+| Directory | Purpose |
+|-----------|---------|
+| `api/` | Express + MySQL2 backend (ESM, TypeScript) |
+| `app/` | React + Vite + TanStack frontend |
 
 ## API
 
