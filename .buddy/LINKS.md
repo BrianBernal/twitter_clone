@@ -7,11 +7,12 @@
 > External docs, design docs, runbooks, dashboards — anything a teammate would want to know about.
 
 Add a link from the terminal:
+
 ```bash
 buddy link https://example.com/doc --title "Payments design" --tags architecture,payments --relevance must-read
 ```
 
-Or ask Buddy in Copilot CLI: *"here's a link: https://… it's our oncall runbook."*
+Or ask Buddy in Copilot CLI: _"here's a link: https://… it's our oncall runbook."_
 
 > ⚠️ Buddy never reads the linked page. It only stores metadata. If you want a summary, paste the contents into the chat.
 
@@ -19,12 +20,12 @@ Or ask Buddy in Copilot CLI: *"here's a link: https://… it's our oncall runboo
 
 ## Must-read
 
-*(none yet)*
+_(none yet)_
 
 ## Helpful
 
-*(none yet)*
+_(none yet)_
 
 ## Optional
 
-*(none yet)*
+_(none yet)_

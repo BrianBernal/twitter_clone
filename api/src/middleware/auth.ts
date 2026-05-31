@@ -4,6 +4,7 @@ import { Session } from '../types/index.js';
 const sessions = new Map<string, number>();
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       userId?: number;

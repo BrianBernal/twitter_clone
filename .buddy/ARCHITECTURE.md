@@ -34,24 +34,24 @@ There are 4 layers:
 3. **Controllers** — handle the request, call models, send the response
 4. **Models** — run SQL queries against MySQL
 
-| Layer | Directory | Responsibility |
-|-------|-----------|----------------|
-| Routes | `api/src/routes/` | Define URL paths and chain middleware + controllers |
-| Middleware | `api/src/middleware/` | Auth checks, input validation, error handling |
-| Controllers | `api/src/controllers/` | Business logic — decide what to do with a request |
-| Models | `api/src/models/` | Database queries — talk to MySQL |
-| Validators | `api/src/validators/` | Per-route validation functions |
-| Config | `api/src/config/` | Environment config, DB pool, validation flags |
-| Types | `api/src/types/` | TypeScript interfaces for User, Tweet, etc. |
+| Layer       | Directory              | Responsibility                                      |
+| ----------- | ---------------------- | --------------------------------------------------- |
+| Routes      | `api/src/routes/`      | Define URL paths and chain middleware + controllers |
+| Middleware  | `api/src/middleware/`  | Auth checks, input validation, error handling       |
+| Controllers | `api/src/controllers/` | Business logic — decide what to do with a request   |
+| Models      | `api/src/models/`      | Database queries — talk to MySQL                    |
+| Validators  | `api/src/validators/`  | Per-route validation functions                      |
+| Config      | `api/src/config/`      | Environment config, DB pool, validation flags       |
+| Types       | `api/src/types/`       | TypeScript interfaces for User, Tweet, etc.         |
 
 ### Frontend (App) — React + TanStack
 
-| Layer | Directory | Responsibility |
-|-------|-----------|----------------|
-| Routes | `app/src/routes/` | Page-level components, one per URL path |
-| Components | `app/src/components/` | Reusable UI pieces (Feed, TweetCard, Layout) |
-| Hooks | `app/src/hooks/` | TanStack Query wrappers — data fetching + mutations |
-| API client | `app/src/api/` | HTTP client with auth header injection |
+| Layer      | Directory             | Responsibility                                      |
+| ---------- | --------------------- | --------------------------------------------------- |
+| Routes     | `app/src/routes/`     | Page-level components, one per URL path             |
+| Components | `app/src/components/` | Reusable UI pieces (Feed, TweetCard, Layout)        |
+| Hooks      | `app/src/hooks/`      | TanStack Query wrappers — data fetching + mutations |
+| API client | `app/src/api/`        | HTTP client with auth header injection              |
 
 ## Request / data flow
 
@@ -111,6 +111,7 @@ There are 4 layers:
 ## Key boundaries
 
 ### Backend
+
 - **Routes never do logic.** They just wire up middleware + controllers.
 - **Controllers never touch the database directly.** They call model functions.
 - **Models never send HTTP responses.** They return data (or throw errors).
@@ -119,6 +120,7 @@ There are 4 layers:
 - **All endpoints return `{ data: ... }` or `{ error: "..." }`.** The `errorHandler` middleware catches unhandled errors as 500.
 
 ### Frontend
+
 - **Pages never fetch data directly.** They use hooks that wrap TanStack Query.
 - **Hooks never touch the DOM.** They return data + mutation functions.
 - **API client never knows about React.** It's a plain fetch wrapper.

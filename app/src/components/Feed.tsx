@@ -1,25 +1,25 @@
-import { useState } from 'react'
-import { useFeed } from '../hooks/useFeed'
-import { useCreateTweet } from '../hooks/useTweets'
-import { TweetCard } from './TweetCard'
-import styles from './Feed.module.css'
+import { useState } from 'react';
+import { useFeed } from '../hooks/useFeed';
+import { useCreateTweet } from '../hooks/useTweets';
+import { TweetCard } from './TweetCard';
+import styles from './Feed.module.css';
 
 export function Feed() {
-  const [content, setContent] = useState('')
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useFeed()
-  const createTweet = useCreateTweet()
+  const [content, setContent] = useState('');
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useFeed();
+  const createTweet = useCreateTweet();
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!content.trim()) return
+    e.preventDefault();
+    if (!content.trim()) return;
     createTweet.mutate(content, {
       onSuccess: () => setContent(''),
-    })
-  }
+    });
+  };
 
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>;
 
-  const tweets = data?.pages.flatMap((page) => page.data) ?? []
+  const tweets = data?.pages.flatMap((page) => page.data) ?? [];
 
   return (
     <div>
@@ -50,5 +50,5 @@ export function Feed() {
         </button>
       )}
     </div>
-  )
+  );
 }

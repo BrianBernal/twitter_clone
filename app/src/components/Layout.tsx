@@ -1,11 +1,11 @@
-import { Link, Outlet } from '@tanstack/react-router'
-import { getToken } from '../api/client'
-import { useSignout } from '../hooks/useAuth'
-import styles from './Layout.module.css'
+import { Link, Outlet } from '@tanstack/react-router';
+import { getToken } from '../api/client';
+import { useSignout } from '../hooks/useAuth';
+import styles from './Layout.module.css';
 
 export function Layout() {
-  const isAuthenticated = !!getToken()
-  const signout = useSignout()
+  const isAuthenticated = !!getToken();
+  const signout = useSignout();
 
   return (
     <div>
@@ -32,5 +32,5 @@ export function Layout() {
         <Outlet />
       </main>
     </div>
-  )
+  );
 }

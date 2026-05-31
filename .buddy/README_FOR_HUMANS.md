@@ -8,10 +8,10 @@ Hi there! I'm **Buddy**, your friendly guide to this repo.
 
 **twitter-clone** is a full-stack Twitter-like social media app. It has two parts:
 
-| Part | What it does | Tech |
-|------|-------------|------|
-| **API** (`api/`) | Backend REST API — handles users, tweets, follows, likes | Express + TypeScript + MySQL |
-| **App** (`app/`) | Frontend web app — the UI you see in the browser | React 19 + Vite + TanStack Router + TanStack Query |
+| Part             | What it does                                             | Tech                                               |
+| ---------------- | -------------------------------------------------------- | -------------------------------------------------- |
+| **API** (`api/`) | Backend REST API — handles users, tweets, follows, likes | Express + TypeScript + MySQL                       |
+| **App** (`app/`) | Frontend web app — the UI you see in the browser         | React 19 + Vite + TanStack Router + TanStack Query |
 
 Together they let you:
 
@@ -46,10 +46,12 @@ Together they let you:
 ## How to use Buddy
 
 In your terminal:
+
 - `@buddy status` — Is the knowledge here up to date?
 - `@buddy open <name>` — Open a Buddy doc (try: `@buddy open getting-started`).
 
 Ask questions like:
-- *"How do I run this project?"*
-- *"Where does login happen?"*
-- *"Update buddy"* (before committing)
+
+- _"How do I run this project?"_
+- _"Where does login happen?"_
+- _"Update buddy"_ (before committing)

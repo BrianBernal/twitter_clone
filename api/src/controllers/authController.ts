@@ -18,7 +18,13 @@ export async function signup(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    const user = await createUser({ user_handle, email_address, first_name, last_name, phone_number });
+    const user = await createUser({
+      user_handle,
+      email_address,
+      first_name,
+      last_name,
+      phone_number,
+    });
     const session = createSession(user.user_id);
     res.status(201).json({ data: { session_token: session.token, user } });
   } catch (err) {

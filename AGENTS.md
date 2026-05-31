@@ -2,17 +2,19 @@
 
 ## Commands
 
-| Command | What it does |
-|---------|-------------|
-| `pnpm dev` | Starts both API and App dev servers concurrently |
-| `pnpm dev:api` | API dev server via `tsx watch api/src/index.ts` |
-| `pnpm dev:app` | App dev server via `vite` with HMR |
-| `pnpm build` | Builds both API and App for production |
-| `pnpm build:api` | `tsc` — outputs ESM to `api/dist/` |
-| `pnpm build:app` | `vite build && tsc` — outputs to `app/dist/` |
-| `pnpm start` | `node api/dist/index.js` |
-
-No test/lint/format scripts exist yet.
+| Command             | What it does                                     |
+| ------------------- | ------------------------------------------------ |
+| `pnpm dev`          | Starts both API and App dev servers concurrently |
+| `pnpm dev:api`      | API dev server via `tsx watch api/src/index.ts`  |
+| `pnpm dev:app`      | App dev server via `vite` with HMR               |
+| `pnpm build`        | Builds both API and App for production           |
+| `pnpm build:api`    | `tsc` — outputs ESM to `api/dist/`               |
+| `pnpm build:app`    | `vite build && tsc` — outputs to `app/dist/`     |
+| `pnpm start`        | `node api/dist/index.js`                         |
+| `pnpm lint`         | ESLint on both `api/` and `app/`                 |
+| `pnpm lint:fix`     | ESLint with auto-fix on both packages            |
+| `pnpm format`       | Prettier — writes formatting to all source files |
+| `pnpm format:check` | Prettier — checks formatting (for CI)            |
 
 ## Monorepo structure
 
@@ -39,33 +41,33 @@ No test/lint/format scripts exist yet.
 
 ## API Routes
 
-| Prefix | File | Notes |
-|--------|------|-------|
-| `POST /api/auth/signup` | `authRoutes` | Validates handle, email, name; 409 on duplicate |
-| `POST /api/auth/signin` | `authRoutes` | Email-only auth (`email_address`), returns session token |
-| `POST /api/auth/signout` | `authRoutes` | Destroys in-memory session |
-| `GET /api/users/:id` | `userRoutes` | All user routes require auth |
-| `GET /api/users/:id/followers` | `userRoutes` | Requires auth |
-| `GET /api/users/:id/following` | `userRoutes` | Requires auth |
-| `GET /api/getAllUsers` | `userRoutes` | Requires auth |
-| `POST /api/tweets` | `tweetRoutes` | Requires auth, max 280 chars |
-| `DELETE /api/tweets/:id` | `tweetRoutes` | Owner-only (403 if not author) |
-| `POST /api/tweets/:id/like` | `tweetRoutes` | Requires auth |
-| `DELETE /api/tweets/:id/like` | `tweetRoutes` | Requires auth |
-| `GET /api/tweets/:id/likes` | `tweetRoutes` | Requires auth |
-| `POST /api/followers` | `followRoutes` | Requires auth, cannot follow self |
-| `DELETE /api/followers/:following_id` | `followRoutes` | Requires auth |
-| `GET /api/feed` | `app.ts` inline | Requires auth, paginated |
+| Prefix                                | File            | Notes                                                    |
+| ------------------------------------- | --------------- | -------------------------------------------------------- |
+| `POST /api/auth/signup`               | `authRoutes`    | Validates handle, email, name; 409 on duplicate          |
+| `POST /api/auth/signin`               | `authRoutes`    | Email-only auth (`email_address`), returns session token |
+| `POST /api/auth/signout`              | `authRoutes`    | Destroys in-memory session                               |
+| `GET /api/users/:id`                  | `userRoutes`    | All user routes require auth                             |
+| `GET /api/users/:id/followers`        | `userRoutes`    | Requires auth                                            |
+| `GET /api/users/:id/following`        | `userRoutes`    | Requires auth                                            |
+| `GET /api/getAllUsers`                | `userRoutes`    | Requires auth                                            |
+| `POST /api/tweets`                    | `tweetRoutes`   | Requires auth, max 280 chars                             |
+| `DELETE /api/tweets/:id`              | `tweetRoutes`   | Owner-only (403 if not author)                           |
+| `POST /api/tweets/:id/like`           | `tweetRoutes`   | Requires auth                                            |
+| `DELETE /api/tweets/:id/like`         | `tweetRoutes`   | Requires auth                                            |
+| `GET /api/tweets/:id/likes`           | `tweetRoutes`   | Requires auth                                            |
+| `POST /api/followers`                 | `followRoutes`  | Requires auth, cannot follow self                        |
+| `DELETE /api/followers/:following_id` | `followRoutes`  | Requires auth                                            |
+| `GET /api/feed`                       | `app.ts` inline | Requires auth, paginated                                 |
 
 ## App Routes (Frontend)
 
-| Path | File | Notes |
-|------|------|-------|
-| `/` | `index.tsx` | Feed (redirects to /signin if unauthenticated) |
-| `/signin` | `signin.tsx` | Sign in form |
-| `/signup` | `signup.tsx` | Sign up form |
-| `/users` | `users.index.tsx` | User directory |
-| `/users/$id` | `users.$id.tsx` | User profile |
+| Path         | File              | Notes                                          |
+| ------------ | ----------------- | ---------------------------------------------- |
+| `/`          | `index.tsx`       | Feed (redirects to /signin if unauthenticated) |
+| `/signin`    | `signin.tsx`      | Sign in form                                   |
+| `/signup`    | `signup.tsx`      | Sign up form                                   |
+| `/users`     | `users.index.tsx` | User directory                                 |
+| `/users/$id` | `users.$id.tsx`   | User profile                                   |
 
 ## Environment
 

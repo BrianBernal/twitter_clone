@@ -9,6 +9,7 @@
 ## ✅ Recently answered
 
 These questions were answered by the 9 new commits between `1f9923b` and `69e6209`:
+
 - **Database schema** — now answered by `src/config/sql_schema.sql` (full CREATE TABLE with indexes and `ON DELETE CASCADE`)
 - **Indexes** — yes: `idx_user_id`, `idx_following_id`, `idx_tweet_id`
 - **Foreign key CASCADE** — yes: all foreign keys use `ON DELETE CASCADE`
@@ -19,8 +20,13 @@ These questions were answered by the 9 new commits between `1f9923b` and `69e620
 
 - Are there any plans for testing? What test framework would be preferred?
 - Is there a planned CI pipeline? (`.github/` folder has no workflow files)
-- Are there any lint or formatting conventions (ESLint, Prettier)?
 - Should there be password/authentication improvements (bcrypt, JWT)?
+
+## ✅ Recently answered
+
+The following sections were resolved by implementation on May 31, 2026:
+
+- **Lint/format conventions** — ESLint (flat config, `api/` + `app/`) + Prettier (shared root config, `semi: true`) + Husky/lint-staged. See `.buddy/NOTES/linter_setup_plan.md`.
 
 ## API design
 

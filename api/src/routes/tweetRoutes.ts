@@ -1,5 +1,5 @@
 import { Router, Router as RouterType } from 'express';
-import { create as createTweet, remove as removeTweet, feed } from '../controllers/tweetController.js';
+import { create as createTweet, remove as removeTweet } from '../controllers/tweetController.js';
 import { like, unlike, getLikes } from '../controllers/likeController.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { validationMiddleware } from '../middleware/validation.js';

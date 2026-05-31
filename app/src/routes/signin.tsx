@@ -1,24 +1,24 @@
-import { useState } from 'react'
-import { createFileRoute, Navigate, Link } from '@tanstack/react-router'
-import { getToken } from '../api/client'
-import { useSignin } from '../hooks/useAuth'
+import { useState } from 'react';
+import { createFileRoute, Navigate, Link } from '@tanstack/react-router';
+import { getToken } from '../api/client';
+import { useSignin } from '../hooks/useAuth';
 
 export const Route = createFileRoute('/signin')({
   component: SigninPage,
-})
+});
 
 function SigninPage() {
-  const [email_address, setEmailAddress] = useState('')
-  const signin = useSignin()
+  const [email_address, setEmailAddress] = useState('');
+  const signin = useSignin();
 
   if (getToken()) {
-    return <Navigate to="/" />
+    return <Navigate to="/" />;
   }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    signin.mutate({ email_address })
-  }
+    e.preventDefault();
+    signin.mutate({ email_address });
+  };
 
   return (
     <div>
@@ -42,5 +42,5 @@ function SigninPage() {
         Don't have an account? <Link to="/signup">Sign up</Link>
       </p>
     </div>
-  )
+  );
 }

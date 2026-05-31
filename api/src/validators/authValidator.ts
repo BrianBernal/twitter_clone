@@ -3,10 +3,19 @@ import { Request } from 'express';
 export function validateSignup(req: Request): string | null {
   const { user_handle, email_address, first_name, last_name } = req.body;
 
-  if (!user_handle || typeof user_handle !== 'string' || user_handle.trim().length === 0 || user_handle.length > 50) {
+  if (
+    !user_handle ||
+    typeof user_handle !== 'string' ||
+    user_handle.trim().length === 0 ||
+    user_handle.length > 50
+  ) {
     return 'user_handle is required (max 50 characters)';
   }
-  if (!email_address || typeof email_address !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_address)) {
+  if (
+    !email_address ||
+    typeof email_address !== 'string' ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_address)
+  ) {
     return 'A valid email_address is required';
   }
   if (!first_name || typeof first_name !== 'string' || first_name.trim().length === 0) {

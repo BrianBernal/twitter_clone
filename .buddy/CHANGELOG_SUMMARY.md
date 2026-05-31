@@ -75,6 +75,7 @@
     - Added `GET /api/getAllUsers` to the API reference table
 
 **What's still missing (good first issues!):**
+
 - No test files or test framework
 - No lint/format scripts
 - No CI pipeline

@@ -23,6 +23,7 @@ mysql -u root < api/src/config/sql_schema.sql
 ```
 
 This runs `api/src/config/sql_schema.sql` which:
+
 - Creates `twitter_db` if it doesn't exist
 - Creates `users`, `tweets`, `followers`, `tweet_likes` tables
 - Adds indexes and foreign keys with `ON DELETE CASCADE`
@@ -50,15 +51,15 @@ cp api/.env.example api/.env
 
 Edit `api/.env` to match your MySQL setup if needed:
 
-| Variable      | Default                 | What it is                 |
-|---------------|-------------------------|----------------------------|
-| `PORT`        | 4000                    | Port the API listens on    |
-| `DB_HOST`     | 127.0.0.1               | MySQL host                 |
-| `DB_PORT`     | 3306                    | MySQL port                 |
-| `DB_USER`     | root                    | MySQL user                 |
-| `DB_PASSWORD` | *(empty)*               | MySQL password             |
-| `DB_NAME`     | twitter_db              | Database name              |
-| `DB_SOCKET`   | /tmp/mysql_3306.sock    | MySQL socket path          |
+| Variable      | Default              | What it is              |
+| ------------- | -------------------- | ----------------------- |
+| `PORT`        | 4000                 | Port the API listens on |
+| `DB_HOST`     | 127.0.0.1            | MySQL host              |
+| `DB_PORT`     | 3306                 | MySQL port              |
+| `DB_USER`     | root                 | MySQL user              |
+| `DB_PASSWORD` | _(empty)_            | MySQL password          |
+| `DB_NAME`     | twitter_db           | Database name           |
+| `DB_SOCKET`   | /tmp/mysql_3306.sock | MySQL socket path       |
 
 ## Run locally (dev mode)
 
@@ -67,6 +68,7 @@ pnpm dev
 ```
 
 This starts **both** the API and App dev servers:
+
 - **API** at `http://localhost:4000` (hot reload via `tsx watch`)
 - **App** at `http://localhost:5173` (Vite HMR — opens in browser)
 
@@ -86,6 +88,7 @@ pnpm build
 ```
 
 Compiles both workspaces:
+
 - API: TypeScript → `api/dist/`
 - App: Vite build + TypeScript → `app/dist/`
 
@@ -121,12 +124,12 @@ curl -X POST http://localhost:4000/api/tweets \
 
 ## Common problems
 
-| Problem | Likely fix |
-|---------|-----------|
-| `ECONNREFUSED` on MySQL | Make sure MySQL is running. Check `DB_HOST`, `DB_PORT` in `api/.env`. |
-| `Unknown database 'twitter_db'` | Run `mysql -u root < api/src/config/sql_schema.sql` to create the database and tables. |
+| Problem                                  | Likely fix                                                                                                                         |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `ECONNREFUSED` on MySQL                  | Make sure MySQL is running. Check `DB_HOST`, `DB_PORT` in `api/.env`.                                                              |
+| `Unknown database 'twitter_db'`          | Run `mysql -u root < api/src/config/sql_schema.sql` to create the database and tables.                                             |
 | `ERR_MODULE_NOT_FOUND` for `.js` imports | This is an ESM project. All local imports use `.js` extensions. That's correct — `tsx` and `tsc` handle the `.ts` → `.js` mapping. |
-| `SyntaxError` on startup | Make sure you have Node 18+ (uses `crypto.randomUUID()`). |
+| `SyntaxError` on startup                 | Make sure you have Node 18+ (uses `crypto.randomUUID()`).                                                                          |
 
 ## Where things live
 

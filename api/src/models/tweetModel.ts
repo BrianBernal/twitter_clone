@@ -5,7 +5,7 @@ import { Tweet } from '../types/index.js';
 export async function findTweetById(id: number): Promise<Tweet | null> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     'SELECT * FROM tweets WHERE tweet_id = ?',
-    [id]
+    [id],
   );
   return rows.length ? (rows[0] as Tweet) : null;
 }
@@ -13,7 +13,7 @@ export async function findTweetById(id: number): Promise<Tweet | null> {
 export async function createTweet(userId: number, tweetText: string): Promise<Tweet> {
   const [result] = await getPool().execute<ResultSetHeader>(
     'INSERT INTO tweets (user_id, tweet_text) VALUES (?, ?)',
-    [userId, tweetText]
+    [userId, tweetText],
   );
   const tweet = await findTweetById(result.insertId);
   return tweet!;
@@ -22,12 +22,16 @@ export async function createTweet(userId: number, tweetText: string): Promise<Tw
 export async function deleteTweet(tweetId: number): Promise<boolean> {
   const [result] = await getPool().execute<ResultSetHeader>(
     'DELETE FROM tweets WHERE tweet_id = ?',
-    [tweetId]
+    [tweetId],
   );
   return result.affectedRows > 0;
 }
 
-export async function getFeedForUser(userId: number, limit = 20, offset = 0): Promise<(Tweet & { user_handle: string })[]> {
+export async function getFeedForUser(
+  userId: number,
+  limit = 20,
+  offset = 0,
+): Promise<(Tweet & { user_handle: string })[]> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     `SELECT t.*, u.user_handle
      FROM tweets t
@@ -36,7 +40,7 @@ export async function getFeedForUser(userId: number, limit = 20, offset = 0): Pr
      WHERE f.follower_id = ?
      ORDER BY t.created_at DESC
      LIMIT ? OFFSET ?`,
-    [userId, String(limit), String(offset)]
+    [userId, String(limit), String(offset)],
   );
   return rows as (Tweet & { user_handle: string })[];
 }
@@ -44,6 +48,6 @@ export async function getFeedForUser(userId: number, limit = 20, offset = 0): Pr
 export async function updateLikesCount(tweetId: number, delta: number): Promise<void> {
   await getPool().execute(
     'UPDATE tweets SET likes_count = GREATEST(0, likes_count + ?) WHERE tweet_id = ?',
-    [delta, tweetId]
+    [delta, tweetId],
   );
 }
