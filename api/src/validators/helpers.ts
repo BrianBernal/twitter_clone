@@ -6,7 +6,7 @@ function fullPath(req: Request): string {
   return p.replace(/\/+$/, '') || '/';
 }
 
-export function validateParam(paramName: string) {
+function validateParam(paramName: string) {
   return (req: Request, res: Response, next: NextFunction): void => {
     const path = fullPath(req);
     if (!isValidationEnabled(req.method, path)) {
@@ -23,3 +23,5 @@ export function validateParam(paramName: string) {
     next();
   };
 }
+
+export { validateParam };

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createSession, destroySession } from '../middleware/auth.js';
 import { createUser, findUserByEmail, findUserByHandle } from '../models/userModel.js';
 
-export async function signup(req: Request, res: Response): Promise<void> {
+async function signup(req: Request, res: Response): Promise<void> {
   try {
     const { user_handle, email_address, first_name, last_name, phone_number } = req.body;
 
@@ -33,7 +33,7 @@ export async function signup(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function signin(req: Request, res: Response): Promise<void> {
+async function signin(req: Request, res: Response): Promise<void> {
   try {
     const { email_address } = req.body;
     const user = await findUserByEmail(email_address);
@@ -50,10 +50,12 @@ export async function signin(req: Request, res: Response): Promise<void> {
   }
 }
 
-export function signout(req: Request, res: Response): void {
+function signout(req: Request, res: Response): void {
   const header = req.headers.authorization;
   if (header && header.startsWith('Bearer ')) {
     destroySession(header.slice(7));
   }
   res.json({ data: { message: 'Signed out' } });
 }
+
+export { signup, signin, signout };

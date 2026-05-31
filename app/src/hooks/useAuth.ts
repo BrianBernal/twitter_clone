@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { signin, signout, signup, setToken, clearToken } from '../api/client';
 
-export function useSignup() {
+function useSignup() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -26,7 +26,7 @@ export function useSignup() {
   });
 }
 
-export function useSignin() {
+function useSignin() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -40,7 +40,7 @@ export function useSignin() {
   });
 }
 
-export function useSignout() {
+function useSignout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -53,3 +53,5 @@ export function useSignout() {
     },
   });
 }
+
+export { useSignup, useSignin, useSignout };

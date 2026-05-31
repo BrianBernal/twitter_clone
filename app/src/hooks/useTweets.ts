@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createTweet, deleteTweet, likeTweet, unlikeTweet } from '../api/client';
 
-export function useCreateTweet() {
+function useCreateTweet() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -12,7 +12,7 @@ export function useCreateTweet() {
   });
 }
 
-export function useDeleteTweet() {
+function useDeleteTweet() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -23,7 +23,7 @@ export function useDeleteTweet() {
   });
 }
 
-export function useLikeTweet() {
+function useLikeTweet() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -34,7 +34,7 @@ export function useLikeTweet() {
   });
 }
 
-export function useUnlikeTweet() {
+function useUnlikeTweet() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -44,3 +44,5 @@ export function useUnlikeTweet() {
     },
   });
 }
+
+export { useCreateTweet, useDeleteTweet, useLikeTweet, useUnlikeTweet };

@@ -12,17 +12,17 @@ declare global {
   }
 }
 
-export function createSession(userId: number): Session {
+function createSession(userId: number): Session {
   const token = crypto.randomUUID();
   sessions.set(token, userId);
   return { token, userId };
 }
 
-export function destroySession(token: string): void {
+function destroySession(token: string): void {
   sessions.delete(token);
 }
 
-export function authMiddleware(req: Request, res: Response, next: NextFunction): void {
+function authMiddleware(req: Request, res: Response, next: NextFunction): void {
   const header = req.headers.authorization;
   if (!header || !header.startsWith('Bearer ')) {
     res.status(401).json({ error: 'Authentication required' });
@@ -39,3 +39,5 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
   req.userId = userId;
   next();
 }
+
+export { createSession, destroySession, authMiddleware };

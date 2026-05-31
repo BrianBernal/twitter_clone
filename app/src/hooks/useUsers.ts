@@ -8,7 +8,7 @@ import {
   getAllUsers,
 } from '../api/client';
 
-export function useUser(id: number) {
+function useUser(id: number) {
   return useQuery({
     queryKey: ['user', id],
     queryFn: () => getUser(id),
@@ -16,7 +16,7 @@ export function useUser(id: number) {
   });
 }
 
-export function useUserFollowers(id: number) {
+function useUserFollowers(id: number) {
   return useQuery({
     queryKey: ['user', id, 'followers'],
     queryFn: () => getUserFollowers(id),
@@ -24,7 +24,7 @@ export function useUserFollowers(id: number) {
   });
 }
 
-export function useUserFollowing(id: number) {
+function useUserFollowing(id: number) {
   return useQuery({
     queryKey: ['user', id, 'following'],
     queryFn: () => getUserFollowing(id),
@@ -32,14 +32,14 @@ export function useUserFollowing(id: number) {
   });
 }
 
-export function useAllUsers() {
+function useAllUsers() {
   return useQuery({
     queryKey: ['users'],
     queryFn: getAllUsers,
   });
 }
 
-export function useFollowUser() {
+function useFollowUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -50,7 +50,7 @@ export function useFollowUser() {
   });
 }
 
-export function useUnfollowUser() {
+function useUnfollowUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -60,3 +60,5 @@ export function useUnfollowUser() {
     },
   });
 }
+
+export { useUser, useUserFollowers, useUserFollowing, useAllUsers, useFollowUser, useUnfollowUser };

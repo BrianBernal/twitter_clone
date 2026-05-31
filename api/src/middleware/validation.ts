@@ -5,7 +5,7 @@ type ValidationFn = (req: Request) => string | null;
 
 const validators = new Map<string, ValidationFn>();
 
-export function registerValidator(method: string, path: string, fn: ValidationFn): void {
+function registerValidator(method: string, path: string, fn: ValidationFn): void {
   validators.set(`${method.toUpperCase()} ${path}`, fn);
 }
 
@@ -14,7 +14,7 @@ function fullPath(req: Request): string {
   return p.replace(/\/+$/, '') || '/';
 }
 
-export function validationMiddleware(req: Request, res: Response, next: NextFunction): void {
+function validationMiddleware(req: Request, res: Response, next: NextFunction): void {
   const path = fullPath(req);
   if (!isValidationEnabled(req.method, path)) {
     next();
@@ -36,3 +36,5 @@ export function validationMiddleware(req: Request, res: Response, next: NextFunc
 
   next();
 }
+
+export { registerValidator, validationMiddleware };

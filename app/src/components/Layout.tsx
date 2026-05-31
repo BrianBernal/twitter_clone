@@ -3,7 +3,7 @@ import { getToken } from '../api/client';
 import { useSignout } from '../hooks/useAuth';
 import styles from './Layout.module.css';
 
-export function Layout() {
+function Layout() {
   const isAuthenticated = !!getToken();
   const signout = useSignout();
 
@@ -34,3 +34,5 @@ export function Layout() {
     </div>
   );
 }
+
+export { Layout };

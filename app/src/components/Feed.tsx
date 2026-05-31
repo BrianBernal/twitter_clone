@@ -4,7 +4,7 @@ import { useCreateTweet } from '../hooks/useTweets';
 import { TweetCard } from './TweetCard';
 import styles from './Feed.module.css';
 
-export function Feed() {
+function Feed() {
   const [content, setContent] = useState('');
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useFeed();
   const createTweet = useCreateTweet();
@@ -52,3 +52,5 @@ export function Feed() {
     </div>
   );
 }
+
+export { Feed };

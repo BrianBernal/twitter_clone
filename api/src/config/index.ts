@@ -1,6 +1,6 @@
 import { createPool, Pool } from 'mysql2/promise';
 
-export interface AppConfig {
+interface AppConfig {
   port: number;
   db: {
     host: string;
@@ -43,7 +43,7 @@ const config: AppConfig = {
 
 let pool: Pool | null = null;
 
-export function getPool(): Pool {
+function getPool(): Pool {
   if (!pool) {
     pool = createPool({
       host: config.db.host,
@@ -59,10 +59,12 @@ export function getPool(): Pool {
   return pool;
 }
 
-export function isValidationEnabled(method: string, path: string): boolean {
+function isValidationEnabled(method: string, path: string): boolean {
   const normalized = path.replace(/\/+$/, '') || '/';
   const key = `${method.toUpperCase()} ${normalized}`;
   return config.validationFlags[key] !== false;
 }
+
+export { AppConfig, getPool, isValidationEnabled };
 
 export default config;

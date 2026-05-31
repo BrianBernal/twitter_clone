@@ -1,4 +1,4 @@
-export interface User {
+interface User {
   user_id: number;
   user_handle: string;
   email_address: string;
@@ -11,7 +11,7 @@ export interface User {
   created_at: string;
 }
 
-export interface Tweet {
+interface Tweet {
   tweet_id: number;
   user_id: number;
   tweet_text: string;
@@ -20,15 +20,17 @@ export interface Tweet {
   user_handle?: string;
 }
 
-export interface AuthResponse {
+interface AuthResponse {
   session_token: string;
   user: User;
 }
 
-export interface ApiResponse<T> {
+interface ApiResponse<T> {
   data: T;
 }
 
-export interface ApiError {
+interface ApiError {
   error: string;
 }
+
+export { User, Tweet, AuthResponse, ApiResponse, ApiError };

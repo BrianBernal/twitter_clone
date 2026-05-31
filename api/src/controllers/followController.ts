@@ -3,7 +3,7 @@ import { followUser, unfollowUser, isFollowing } from '../models/followModel.js'
 import { findUserById } from '../models/userModel.js';
 import { updateFollowerCount } from '../models/userModel.js';
 
-export async function follow(req: Request, res: Response): Promise<void> {
+async function follow(req: Request, res: Response): Promise<void> {
   try {
     const followingId = Number(req.body.following_id);
     const followerId = req.userId!;
@@ -39,7 +39,7 @@ export async function follow(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function unfollow(req: Request, res: Response): Promise<void> {
+async function unfollow(req: Request, res: Response): Promise<void> {
   try {
     const followingId = Number(req.params.following_id);
     const followerId = req.userId!;
@@ -57,3 +57,5 @@ export async function unfollow(req: Request, res: Response): Promise<void> {
     res.status(500).json({ error: 'Failed to unfollow user' });
   }
 }
+
+export { follow, unfollow };

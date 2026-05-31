@@ -21,6 +21,24 @@ export default defineConfig([
     },
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'ExportNamedDeclaration[declaration]',
+          message:
+            'Export on the same line as a declaration is not allowed. Declare first, then use `export { name }` at the end of the file.',
+        },
+        {
+          selector: 'ExportDefaultDeclaration > FunctionDeclaration',
+          message:
+            'Default export on the same line as a function declaration is not allowed. Declare the function first, then use `export default name` at the end of the file.',
+        },
+        {
+          selector: 'ExportDefaultDeclaration > ClassDeclaration',
+          message:
+            'Default export on the same line as a class declaration is not allowed. Declare the class first, then use `export default name` at the end of the file.',
+        },
+      ],
     },
   },
 ]);

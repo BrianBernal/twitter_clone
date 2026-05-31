@@ -2,7 +2,7 @@ import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { Feed } from '../components/Feed';
 
-export const Route = createFileRoute('/')({
+const Route = createFileRoute('/')({
   component: IndexRoute,
 });
 
@@ -15,3 +15,5 @@ function IndexRoute() {
 
   return <Feed />;
 }
+
+export { Route };

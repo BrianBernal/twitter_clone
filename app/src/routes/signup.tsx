@@ -3,7 +3,7 @@ import { createFileRoute, Navigate, Link } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { useSignup } from '../hooks/useAuth';
 
-export const Route = createFileRoute('/signup')({
+const Route = createFileRoute('/signup')({
   component: SignupPage,
 });
 
@@ -71,3 +71,5 @@ function SignupPage() {
     </div>
   );
 }
+
+export { Route };

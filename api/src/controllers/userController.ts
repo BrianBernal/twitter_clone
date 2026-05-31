@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { findAllUsers, findUserById } from '../models/userModel.js';
 import { getFollowers, getFollowing } from '../models/followModel.js';
 
-export async function getProfile(req: Request, res: Response): Promise<void> {
+async function getProfile(req: Request, res: Response): Promise<void> {
   try {
     const userId = Number(req.params.id);
     const user = await findUserById(userId);
@@ -17,7 +17,7 @@ export async function getProfile(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function getFollowersList(req: Request, res: Response): Promise<void> {
+async function getFollowersList(req: Request, res: Response): Promise<void> {
   try {
     const userId = Number(req.params.id);
     const user = await findUserById(userId);
@@ -33,7 +33,7 @@ export async function getFollowersList(req: Request, res: Response): Promise<voi
   }
 }
 
-export async function getFollowingList(req: Request, res: Response): Promise<void> {
+async function getFollowingList(req: Request, res: Response): Promise<void> {
   try {
     const userId = Number(req.params.id);
     const user = await findUserById(userId);
@@ -49,7 +49,7 @@ export async function getFollowingList(req: Request, res: Response): Promise<voi
   }
 }
 
-export async function getAllUsers(_req: Request, res: Response): Promise<void> {
+async function getAllUsers(_req: Request, res: Response): Promise<void> {
   try {
     const users = await findAllUsers();
     res.json({ data: users });
@@ -58,3 +58,5 @@ export async function getAllUsers(_req: Request, res: Response): Promise<void> {
     res.status(500).json({ error: 'Failed to get users' });
   }
 }
+
+export { getProfile, getFollowersList, getFollowingList, getAllUsers };

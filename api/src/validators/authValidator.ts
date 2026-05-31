@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export function validateSignup(req: Request): string | null {
+function validateSignup(req: Request): string | null {
   const { user_handle, email_address, first_name, last_name } = req.body;
 
   if (
@@ -33,7 +33,8 @@ export function validateSignup(req: Request): string | null {
   return null;
 }
 
-export function validateSignin(req: Request): string | null {
+export { validateSignup, validateSignin };
+function validateSignin(req: Request): string | null {
   const { email_address } = req.body;
   if (!email_address || typeof email_address !== 'string' || email_address.trim().length === 0) {
     return 'email_address is required';

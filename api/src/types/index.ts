@@ -1,4 +1,4 @@
-export interface User {
+interface User {
   user_id: number;
   user_handle: string;
   email_address: string;
@@ -9,7 +9,7 @@ export interface User {
   created_at: string;
 }
 
-export interface Tweet {
+interface Tweet {
   tweet_id: number;
   user_id: number;
   tweet_text: string;
@@ -17,22 +17,24 @@ export interface Tweet {
   created_at: string;
 }
 
-export interface Follower {
+interface Follower {
   follower_id: number;
   following_id: number;
 }
 
-export interface TweetLike {
+interface TweetLike {
   user_id: number;
   tweet_id: number;
 }
 
-export interface Session {
+interface Session {
   token: string;
   userId: number;
 }
 
-export interface ApiResponse<T = unknown> {
+interface ApiResponse<T = unknown> {
   data?: T;
   error?: string;
 }
+
+export { User, Tweet, Follower, TweetLike, Session, ApiResponse };

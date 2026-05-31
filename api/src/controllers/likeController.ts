@@ -3,7 +3,7 @@ import { likeTweet, unlikeTweet, hasLiked, getTweetLikes } from '../models/likeM
 import { findTweetById } from '../models/tweetModel.js';
 import { updateLikesCount } from '../models/tweetModel.js';
 
-export async function like(req: Request, res: Response): Promise<void> {
+async function like(req: Request, res: Response): Promise<void> {
   try {
     const tweetId = Number(req.params.id);
     const userId = req.userId!;
@@ -34,7 +34,7 @@ export async function like(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function unlike(req: Request, res: Response): Promise<void> {
+async function unlike(req: Request, res: Response): Promise<void> {
   try {
     const tweetId = Number(req.params.id);
     const userId = req.userId!;
@@ -53,7 +53,7 @@ export async function unlike(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function getLikes(req: Request, res: Response): Promise<void> {
+async function getLikes(req: Request, res: Response): Promise<void> {
   try {
     const tweetId = Number(req.params.id);
     const tweet = await findTweetById(tweetId);
@@ -69,3 +69,5 @@ export async function getLikes(req: Request, res: Response): Promise<void> {
     res.status(500).json({ error: 'Failed to get likes' });
   }
 }
+
+export { like, unlike, getLikes };

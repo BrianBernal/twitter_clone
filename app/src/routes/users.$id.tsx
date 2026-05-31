@@ -2,7 +2,7 @@ import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { useUser } from '../hooks/useUsers';
 import { getToken } from '../api/client';
 
-export const Route = createFileRoute('/users/$id')({
+const Route = createFileRoute('/users/$id')({
   component: UserProfilePage,
 });
 
@@ -41,3 +41,5 @@ function UserProfilePage() {
     </div>
   );
 }
+
+export { Route };

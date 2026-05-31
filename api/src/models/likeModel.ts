@@ -2,7 +2,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { getPool } from '../config/index.js';
 import { User } from '../types/index.js';
 
-export async function likeTweet(userId: number, tweetId: number): Promise<boolean> {
+async function likeTweet(userId: number, tweetId: number): Promise<boolean> {
   try {
     const [result] = await getPool().execute<ResultSetHeader>(
       'INSERT INTO tweet_likes (user_id, tweet_id) VALUES (?, ?)',
@@ -14,7 +14,7 @@ export async function likeTweet(userId: number, tweetId: number): Promise<boolea
   }
 }
 
-export async function unlikeTweet(userId: number, tweetId: number): Promise<boolean> {
+async function unlikeTweet(userId: number, tweetId: number): Promise<boolean> {
   const [result] = await getPool().execute<ResultSetHeader>(
     'DELETE FROM tweet_likes WHERE user_id = ? AND tweet_id = ?',
     [userId, tweetId],
@@ -22,7 +22,7 @@ export async function unlikeTweet(userId: number, tweetId: number): Promise<bool
   return result.affectedRows > 0;
 }
 
-export async function hasLiked(userId: number, tweetId: number): Promise<boolean> {
+async function hasLiked(userId: number, tweetId: number): Promise<boolean> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     'SELECT 1 FROM tweet_likes WHERE user_id = ? AND tweet_id = ?',
     [userId, tweetId],
@@ -30,7 +30,7 @@ export async function hasLiked(userId: number, tweetId: number): Promise<boolean
   return rows.length > 0;
 }
 
-export async function getTweetLikes(tweetId: number): Promise<User[]> {
+async function getTweetLikes(tweetId: number): Promise<User[]> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     `SELECT u.* FROM users u
      JOIN tweet_likes tl ON u.user_id = tl.user_id
@@ -39,3 +39,5 @@ export async function getTweetLikes(tweetId: number): Promise<User[]> {
   );
   return rows as User[];
 }
+
+export { likeTweet, unlikeTweet, hasLiked, getTweetLikes };

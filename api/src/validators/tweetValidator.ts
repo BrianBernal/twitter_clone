@@ -1,6 +1,6 @@
 import { Request } from 'express';
 
-export function validateCreateTweet(req: Request): string | null {
+function validateCreateTweet(req: Request): string | null {
   const { tweet_text } = req.body;
   if (!tweet_text || typeof tweet_text !== 'string' || tweet_text.trim().length === 0) {
     return 'tweet_text is required';
@@ -11,7 +11,7 @@ export function validateCreateTweet(req: Request): string | null {
   return null;
 }
 
-export function validateFollow(req: Request): string | null {
+function validateFollow(req: Request): string | null {
   const followingId = Number(req.body.following_id);
   if (!Number.isInteger(followingId) || followingId <= 0) {
     return 'following_id must be a positive integer';
@@ -22,10 +22,12 @@ export function validateFollow(req: Request): string | null {
   return null;
 }
 
-export function validateIdParam(req: Request): string | null {
+function validateIdParam(req: Request): string | null {
   const id = Number(req.params.id || req.params.following_id || req.params.tweet_id);
   if (!Number.isInteger(id) || id <= 0) {
     return 'ID parameter must be a positive integer';
   }
   return null;
 }
+
+export { validateCreateTweet, validateFollow, validateIdParam };

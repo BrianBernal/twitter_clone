@@ -6,7 +6,7 @@ interface TweetCardProps {
   tweet: Tweet;
 }
 
-export function TweetCard({ tweet }: TweetCardProps) {
+function TweetCard({ tweet }: TweetCardProps) {
   const likeMutation = useLikeTweet();
 
   const handleLike = () => {
@@ -25,3 +25,5 @@ export function TweetCard({ tweet }: TweetCardProps) {
     </div>
   );
 }
+
+export { TweetCard };

@@ -3,7 +3,7 @@ import { useAllUsers } from '../hooks/useUsers';
 import { getToken } from '../api/client';
 import { Navigate } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/users/')({
+const Route = createFileRoute('/users/')({
   component: UsersPage,
 });
 
@@ -34,3 +34,5 @@ function UsersPage() {
     </div>
   );
 }
+
+export { Route };

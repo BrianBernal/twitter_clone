@@ -2,7 +2,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { getPool } from '../config/index.js';
 import { Tweet } from '../types/index.js';
 
-export async function findTweetById(id: number): Promise<Tweet | null> {
+async function findTweetById(id: number): Promise<Tweet | null> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     'SELECT * FROM tweets WHERE tweet_id = ?',
     [id],
@@ -10,7 +10,7 @@ export async function findTweetById(id: number): Promise<Tweet | null> {
   return rows.length ? (rows[0] as Tweet) : null;
 }
 
-export async function createTweet(userId: number, tweetText: string): Promise<Tweet> {
+async function createTweet(userId: number, tweetText: string): Promise<Tweet> {
   const [result] = await getPool().execute<ResultSetHeader>(
     'INSERT INTO tweets (user_id, tweet_text) VALUES (?, ?)',
     [userId, tweetText],
@@ -19,7 +19,7 @@ export async function createTweet(userId: number, tweetText: string): Promise<Tw
   return tweet!;
 }
 
-export async function deleteTweet(tweetId: number): Promise<boolean> {
+async function deleteTweet(tweetId: number): Promise<boolean> {
   const [result] = await getPool().execute<ResultSetHeader>(
     'DELETE FROM tweets WHERE tweet_id = ?',
     [tweetId],
@@ -27,7 +27,7 @@ export async function deleteTweet(tweetId: number): Promise<boolean> {
   return result.affectedRows > 0;
 }
 
-export async function getFeedForUser(
+async function getFeedForUser(
   userId: number,
   limit = 20,
   offset = 0,
@@ -45,9 +45,11 @@ export async function getFeedForUser(
   return rows as (Tweet & { user_handle: string })[];
 }
 
-export async function updateLikesCount(tweetId: number, delta: number): Promise<void> {
+async function updateLikesCount(tweetId: number, delta: number): Promise<void> {
   await getPool().execute(
     'UPDATE tweets SET likes_count = GREATEST(0, likes_count + ?) WHERE tweet_id = ?',
     [delta, tweetId],
   );
 }
+
+export { findTweetById, createTweet, deleteTweet, getFeedForUser, updateLikesCount };

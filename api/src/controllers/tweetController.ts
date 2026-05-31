@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { createTweet, deleteTweet, findTweetById, getFeedForUser } from '../models/tweetModel.js';
 
-export async function create(req: Request, res: Response): Promise<void> {
+async function create(req: Request, res: Response): Promise<void> {
   try {
     const tweet = await createTweet(req.userId!, req.body.tweet_text);
     res.status(201).json({ data: tweet });
@@ -11,7 +11,7 @@ export async function create(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function remove(req: Request, res: Response): Promise<void> {
+async function remove(req: Request, res: Response): Promise<void> {
   try {
     const tweetId = Number(req.params.id);
     const tweet = await findTweetById(tweetId);
@@ -31,7 +31,7 @@ export async function remove(req: Request, res: Response): Promise<void> {
   }
 }
 
-export async function feed(req: Request, res: Response): Promise<void> {
+async function feed(req: Request, res: Response): Promise<void> {
   try {
     const limit = Math.min(Math.max(parseInt(req.query.limit as string) || 20, 1), 100);
     const offset = Math.max(parseInt(req.query.offset as string) || 0, 0);
@@ -42,3 +42,5 @@ export async function feed(req: Request, res: Response): Promise<void> {
     res.status(500).json({ error: 'Failed to get feed' });
   }
 }
+
+export { create, remove, feed };

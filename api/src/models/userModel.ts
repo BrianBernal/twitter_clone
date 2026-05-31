@@ -2,7 +2,7 @@ import { RowDataPacket, ResultSetHeader } from 'mysql2';
 import { getPool } from '../config/index.js';
 import { User } from '../types/index.js';
 
-export async function findUserByEmail(email: string): Promise<User | null> {
+async function findUserByEmail(email: string): Promise<User | null> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     'SELECT * FROM users WHERE email_address = ?',
     [email],
@@ -10,7 +10,7 @@ export async function findUserByEmail(email: string): Promise<User | null> {
   return rows.length ? (rows[0] as User) : null;
 }
 
-export async function findUserByHandle(handle: string): Promise<User | null> {
+async function findUserByHandle(handle: string): Promise<User | null> {
   const [rows] = await getPool().execute<RowDataPacket[]>(
     'SELECT * FROM users WHERE user_handle = ?',
     [handle],
@@ -18,19 +18,19 @@ export async function findUserByHandle(handle: string): Promise<User | null> {
   return rows.length ? (rows[0] as User) : null;
 }
 
-export async function findUserById(id: number): Promise<User | null> {
+async function findUserById(id: number): Promise<User | null> {
   const [rows] = await getPool().execute<RowDataPacket[]>('SELECT * FROM users WHERE user_id = ?', [
     id,
   ]);
   return rows.length ? (rows[0] as User) : null;
 }
 
-export async function findAllUsers(): Promise<User[]> {
+async function findAllUsers(): Promise<User[]> {
   const [rows] = await getPool().execute<RowDataPacket[]>('SELECT * FROM users');
   return rows as User[];
 }
 
-export async function createUser(data: {
+async function createUser(data: {
   user_handle: string;
   email_address: string;
   first_name: string;
@@ -52,9 +52,18 @@ export async function createUser(data: {
   return user!;
 }
 
-export async function updateFollowerCount(userId: number, delta: number): Promise<void> {
+async function updateFollowerCount(userId: number, delta: number): Promise<void> {
   await getPool().execute(
     'UPDATE users SET follower_count = GREATEST(0, follower_count + ?) WHERE user_id = ?',
     [delta, userId],
   );
 }
+
+export {
+  findUserByEmail,
+  findUserByHandle,
+  findUserById,
+  findAllUsers,
+  createUser,
+  updateFollowerCount,
+};

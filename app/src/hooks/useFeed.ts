@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getFeed } from '../api/client';
 
-export function useFeed() {
+function useFeed() {
   return useInfiniteQuery({
     queryKey: ['feed'],
     queryFn: ({ pageParam }) => getFeed(20, pageParam),
@@ -13,3 +13,5 @@ export function useFeed() {
     },
   });
 }
+
+export { useFeed };
