@@ -15,3 +15,10 @@ coverage/
 
 # app (frontend) generated files
 app/src/routeTree.gen.ts
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
