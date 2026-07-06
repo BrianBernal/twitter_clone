@@ -1,10 +1,25 @@
+import { useState, useEffect } from 'react';
 import { Link, Outlet } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { useSignout } from '../hooks/useAuth';
 import styles from './Layout.module.css';
 
+function useIsAuthenticated() {
+  const [authed, setAuthed] = useState(() => !!getToken());
+  useEffect(() => {
+    const check = () => setAuthed(!!getToken());
+    window.addEventListener('storage', check);
+    window.addEventListener('auth-change', check);
+    return () => {
+      window.removeEventListener('storage', check);
+      window.removeEventListener('auth-change', check);
+    };
+  }, []);
+  return authed;
+}
+
 function Layout() {
-  const isAuthenticated = !!getToken();
+  const isAuthenticated = useIsAuthenticated();
   const signout = useSignout();
 
   return (

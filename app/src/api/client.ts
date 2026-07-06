@@ -8,10 +8,12 @@ function getToken(): string | null {
 
 function setToken(token: string): void {
   localStorage.setItem(TOKEN_KEY, token);
+  window.dispatchEvent(new Event('auth-change'));
 }
 
 function clearToken(): void {
   localStorage.removeItem(TOKEN_KEY);
+  window.dispatchEvent(new Event('auth-change'));
 }
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
