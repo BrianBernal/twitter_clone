@@ -9,20 +9,31 @@
 ## Warm-up (≈ 15 min)
 
 - Run the project locally once. Follow `GETTING_STARTED.md` end-to-end and note any step that wasn't obvious.
-- Run the test suite once. If it fails, capture the error and ask in your team chat — that's a real first contribution.
+- Run `pnpm lint` and `pnpm format:check` — make sure everything passes.
+- Run `npx playwright test` — watch the E2E auth tests pass in the browser.
 - Find one typo or unclear sentence in any `README` or `.buddy/*.md` and open a tiny PR fixing it.
 
 ## First real change (≈ 1–2 hrs)
 
-- Pick a **TODO** or **FIXME** comment from the auto-detected list below and turn it into a small PR.
-- Add (or fix) **one test** for a function that doesn't have coverage yet.
-- Improve a log message or error message somewhere in the code — pick one that confused you the first time you read it.
+- **Add a Playwright test** for a flow that isn't covered yet, like creating a tweet or following a user. See `tests/auth.spec.ts` for the pattern.
+- **Add a feature to the ComposeModal**: show a character count that turns red when under 20 chars remaining (it already does this — double-check the implementation and make it perfect).
+- **Fix the "Who to follow" sidebar** to exclude people the current user already follows (currently shows all other users).
+- **Add loading skeletons** for the feed instead of just a spinner.
+- **Pick a TODO or FIXME** comment from the codebase and turn it into a small PR.
 
 ## Learn the codebase by doing
 
 - Trace a single user request from entry point → handler → response. Add a comment or doc explaining what you found.
-- Pick a folder from `MAP/repo_map.md` you don't understand, read it for 20 minutes, then add one sentence about it to the map.
-- Add an entry to `LINKS.md` for any internal doc your team relies on but isn't yet linked.
+- Read `app/specs/refactor.md` — the full "Chirp" frontend spec. Compare it to the actual code. Add a note if something doesn't match.
+- Pick a folder you don't understand, read it for 20 minutes, then add one sentence about it to `MAP/repo_map.md`.
+- Try adding a new route to the frontend (e.g., a settings page at `/settings`). Follow the pattern in `app/src/routes/` — TanStack Router picks it up automatically.
+
+## Projects (≈ half day)
+
+- **Set up CI with GitHub Actions**: run `lint`, `format:check`, `build`, and `npx playwright test` on push/PR.
+- **Add a simple password field** to signup (and bcrypt hash it). This would mean updating the API, database schema, and frontend — a full-stack change!
+- **Replace in-memory auth with JWT tokens** for persistent sessions across restarts.
+- **Add Docker Compose** for the full stack (API + App + MySQL) so anyone can spin it up with one command.
 
 ## Tips
 

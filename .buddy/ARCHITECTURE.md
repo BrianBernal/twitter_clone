@@ -44,30 +44,64 @@ There are 4 layers:
 | Config      | `api/src/config/`      | Environment config, DB pool, validation flags       |
 | Types       | `api/src/types/`       | TypeScript interfaces for User, Tweet, etc.         |
 
-### Frontend (App) — React + TanStack
+### Frontend (App) — React + TanStack + Tailwind
 
-| Layer      | Directory             | Responsibility                                      |
-| ---------- | --------------------- | --------------------------------------------------- |
-| Routes     | `app/src/routes/`     | Page-level components, one per URL path             |
-| Components | `app/src/components/` | Reusable UI pieces (Feed, TweetCard, Layout)        |
-| Hooks      | `app/src/hooks/`      | TanStack Query wrappers — data fetching + mutations |
-| API client | `app/src/api/`        | HTTP client with auth header injection              |
+| Layer      | Directory                    | Responsibility                                                 |
+| ---------- | ---------------------------- | -------------------------------------------------------------- |
+| Routes     | `app/src/routes/`            | Page-level components, one per URL path (file-based)           |
+| Layout     | `app/src/components/layout/` | RootLayout, LeftSidebar, RightSidebar, MobileNav, MobileDrawer |
+| Tweets     | `app/src/components/tweets/` | TweetCard, ComposeModal                                        |
+| Users      | `app/src/components/users/`  | UserCard                                                       |
+| UI         | `app/src/components/ui/`     | ToastProvider + useToast (context-based notification system)   |
+| Hooks      | `app/src/hooks/`             | TanStack Query wrappers — data fetching + mutations            |
+| API client | `app/src/api/`               | HTTP client with auth header injection + TypeScript types      |
+
+## Component tree
+
+```
+main.tsx
+  └── QueryClientProvider
+       └── ToastProvider
+            └── RouterProvider
+                 └── RootLayout (3-column grid)
+                      ├── LeftSidebar (desktop, 275px)
+                      │   ├── Chirp logo
+                      │   ├── Nav: Home, Explore, Following, Followers, Profile
+                      │   └── Sign Out button
+                      │
+                      ├── Main (scrollable, max-w 600px)
+                      │   └── <Outlet /> → page content
+                      │       ├── FeedPage (/)
+                      │       ├── SignInPage (/signin)
+                      │       ├── SignUpPage (/signup)
+                      │       ├── FollowersPage (/followers)
+                      │       ├── FollowingPage (/following)
+                      │       ├── UsersPage (/users)
+                      │       └── UserProfilePage (/users/$id)
+                      │
+                      ├── RightSidebar (desktop, 350px, auth only)
+                      │   ├── ProfileCard
+                      │   └── WhoToFollow
+                      │
+                      ├── MobileNav (bottom bar, <768px)
+                      └── MobileDrawer (slide-out, <768px)
+```
 
 ## Request / data flow
 
 ### Full-stack flow: Creating a tweet
 
 ```
-1. User fills out tweet form in the browser
+1. User taps "Chirp" FAB button in FeedPage
         │
 2.      ▼
-   [app/src/components/Feed.tsx] — calls useTweets().createTweet()
+   [ComposeModal] — textarea, char counter, submit button
         │
 3.      ▼
-   [app/src/hooks/useTweets.ts] — TanStack Query mutation
+   [useCreateTweet] — TanStack Query mutation
         │
 4.      ▼
-   [app/src/api/client.ts] — POST /api/tweets with Bearer token
+   [api/client.ts] — POST /api/tweets with Bearer token
         │
 5.      ▼  (Vite proxies /api/* to localhost:4000)
         │
@@ -87,7 +121,25 @@ There are 4 layers:
    Response: { data: { tweet_id, ... } } (status 201)
         │
 11.     ▼
-   TanStack Query invalidates feed cache → UI re-renders
+   TanStack Query invalidates ['feed'] cache → UI re-renders
+```
+
+### Error flow (with Toast)
+
+```
+1. API returns 400/500 response
+        │
+2.      ▼
+   [api/client.ts] — throws Error with body.error message
+        │
+3.      ▼
+   [useMutation.onError] — calls toast.show(error.message)
+        │
+4.      ▼
+   [ToastProvider] — renders ToastItem with error message
+        │
+5.      ▼
+   [ToastItem] — auto-dismisses after 5s, hover pauses timer
 ```
 
 ### API-only flow: Getting the feed
@@ -124,4 +176,8 @@ There are 4 layers:
 - **Pages never fetch data directly.** They use hooks that wrap TanStack Query.
 - **Hooks never touch the DOM.** They return data + mutation functions.
 - **API client never knows about React.** It's a plain fetch wrapper.
-- **Auth token is stored in `localStorage`**, sent as `Authorization: Bearer` header.
+- **Auth token is stored in `localStorage`** as `twitter_clone_token`, sent as `Authorization: Bearer` header.
+- **User info is stored** in `localStorage` as `twitter_clone_user`.
+- **Auth changes dispatch a custom `auth-change` event** on window — the layout listens to re-render.
+- **Errors flow upward through ToastProvider.** Hooks call `toast.show()` on mutation errors.
+- **Styling is 100% Tailwind CSS v4.** No CSS modules. Design tokens in `app/src/index.css`.

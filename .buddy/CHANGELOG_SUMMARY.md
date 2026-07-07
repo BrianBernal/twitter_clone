@@ -6,77 +6,75 @@
 
 > Updates made when you ask Buddy to "update buddy" before committing.
 
+## 2026-07-07 — Toast notifications, Chirp refactor, E2E tests, lint tooling (11 commits)
+
+1. **`794f392` — feat: add toast notification system for API error feedback** 🔔
+   - New `ToastProvider` + `useToast` context in `app/src/components/ui/Toast.tsx`
+   - Toast shows error/success messages, auto-dismisses after 5s
+   - Integrated into `main.tsx` wrapping the entire app
+   - Hooks (`useAuth`, `useTweets`, `useUsers`) now call `toast.show()` on errors
+
+2. **`ec64dea` — feat: implement Chirp frontend refactor per spec** 🎨
+   - Complete frontend overhaul — the app is now called **"Chirp"**
+   - **Layout system**: RootLayout (3-column grid), LeftSidebar, RightSidebar, MobileNav, MobileDrawer
+   - **New routes**: `/followers`, `/following` (with auth guards)
+   - **New components**: ComposeModal, TweetCard (redesigned), UserCard
+   - **Tailwind CSS v4** replaces all CSS Modules — all styling via utility classes
+   - **Midnight Velocity** design system: dark theme with `#0f1419` surface, `#1d9bf0` primary
+   - Auth now uses `localStorage` (`twitter_clone_token` + `twitter_clone_user`) + custom `auth-change` event
+   - Feed uses `useInfiniteQuery` for paginated loading
+   - See full spec at `app/specs/refactor.md`
+
+3. **`254d8e3` — chore: add look-and-feel opencode skill with Midnight Velocity design tokens** 🎯
+   - Added `.agents/skills/look-and-feel/SKILL.md` — design standards for the "Midnight Velocity" system
+   - Detailed color palette, typography (Inter + JetBrains Mono), spacing, elevation rules
+
+4. **`72c97ee` — chore: add Stitch MCP server for UI design generation** 🧵
+   - MCP config for `stitch.googleapis.com` in `opencode.json`
+   - Uses `STITCH_API_KEY` environment variable
+
+5. **`7304c74` — chore: add tailwind-design-system opencode skill** 🎨
+   - Installed `.opencode/skills/tailwind-design-system/` with advanced Tailwind patterns
+
+6. **`6cd19ac` — feat: add real-time auth reactivity and Playwright E2E test setup** 🧪
+   - `auth-change` custom event dispatches on token set/clear for reactive layout re-renders
+   - Playwright `playwright.config.ts` with 3 browser projects (Chromium, Firefox, WebKit)
+   - `tests/auth.spec.ts` — sign up, sign in, sign out, auth redirect E2E tests
+   - Web server config auto-starts API + App before tests
+
+7. **`1b7d01e` — feat: add Playwright E2E testing with opencode subagents** 🤖
+   - Opencode subagents for Playwright: `playwright-test-generator`, `playwright-test-healer`, `playwright-test-planner`
+   - Prompts in `.opencode/prompts/`
+
+8. **`b8dbf8d` + `217504c` — chore: install auto-detected opencode skills** 📦
+   - `skills-lock.json` with auto-detected skills from registries
+   - Skills installed: accessibility, composition-patterns, frontend-design, nodejs-backend-patterns, nodejs-best-practices, nodejs-express-server, react-best-practices, seo, typescript-advanced-types, vite
+   - `.opencode/skills/tanstack-query/`, `.opencode/skills/tanstack-router/`
+
+9. **`5d8b023` — refactor: enforce exports at end of file via no-restricted-syntax** 📐
+   - ESLint `no-restricted-syntax` rule: all exports must be at end of file
+   - Applied to root, api, and app ESLint configs
+
+10. **`5e23b1c` — feat: add ESLint and Prettier with Husky pre-commit hooks** 🧹
+    - Root `eslint.config.js` with TypeScript + Prettier integration
+    - `api/eslint.config.js` (Node-focused) + `app/eslint.config.js` (React + Hooks + Refresh)
+    - `.prettierrc` (semicolons, single quotes, trailing commas, 100 char width)
+    - `.husky/pre-commit` runs `lint-staged` on staged files
+    - New scripts: `lint`, `lint:fix`, `format`, `format:check`, `prepare`
+
+11. **`ac2b098` + `7d574c5` + `42376f9` — docs: update README and buddy for monorepo** 📝
+    - README updated for monorepo structure
+    - Buddy knowledge base refreshed
+
 ## 2026-05-31 — Monorepo restructure with React frontend (1 commit)
 
-13. **`0621978` — feat: restructure into monorepo with api/ and app/** 🏗️
-    - **66 files changed, 3199 insertions** — the biggest change yet!
-    - Moved the entire backend from `src/` into `api/src/` (code unchanged, just relocated)
-    - Created a brand-new `app/` workspace with a full React frontend:
-      - Sign in / Sign up pages with auth forms
-      - Feed view (paginated timeline with tweets)
-      - User profile pages (`/users/$id`)
-      - User directory (`/users`)
-      - Auth stored in `localStorage`, sent as `Bearer` header via API client
+12. **`0621978` — feat: restructure into monorepo with api/ and app/** 🏗️
+    - 66 files changed, 3199 insertions — the biggest change yet!
+    - Moved backend from `src/` into `api/src/`
+    - Created `app/` workspace with React frontend
     - Set up pnpm workspaces (`pnpm-workspace.yaml`)
-    - Updated root `package.json` with workspace orchestration scripts:
-      - `pnpm dev` starts both API + App concurrently
-      - `pnpm dev:api` / `pnpm dev:app` for single-workspace dev
-    - Vite dev server proxies `/api/**` to Express on `:4000`
+    - Root scripts orchestrate both workspaces
 
-## 2026-05-30 — Initial project setup (3 commits)
+## 2026-05-30 — Initial project setup + Buddy agent + Schema files (12 commits)
 
-1. **`53a747c` — feat: initial project setup**
-   - Express + TypeScript + MySQL2 skeleton
-   - All routes, controllers, models, middleware, validators
-   - In-memory session auth
-   - Basic CRUD for users, tweets, followers, likes
-
-2. **`6a17557` — docs: add AGENTS.md**
-   - Added `AGENTS.md` with command reference and API docs
-
-3. **`1f9923b` — docs: .env.example + fix AGENTS.md**
-   - Added `.env.example` so newcomers know what env vars to set
-   - Fixed the environment section in AGENTS.md
-
-## 2026-05-30 — Buddy agent, schema files, Postman, README, and refinements (9 commits)
-
-4. **`bad8cf8` — feat: add Buddy onboarding agent with cross-platform configs**
-   - Created `.buddy/` knowledge base (all core docs, maps, indexes)
-   - Added agent configs for Claude, GitHub, and Opencode
-
-5. **`b17eec5` — feat: add Postman collection with all API endpoint examples**
-   - Added `.postman-collection/twitter-clone-api.postman_collection.json`
-   - Includes all endpoints: auth, users, tweets, follows, feed
-
-6. **`c12f2c4` — refactor: extract env var destructuring in config, default port to 4000**
-   - Moved `process.env` destructuring to top of `api/src/config/index.ts`
-   - Changed default `PORT` from `3000` to `4000`
-
-7. **`dba8152` — refactor: parameterize port as {{PORT}} in Postman collection**
-   - Postman collection now uses `{{PORT}}` variable
-
-8. **`e9755cb` — feat: add GET /api/getAllUsers endpoint to list all users**
-   - Added `findAllUsers()` in `api/src/models/userModel.ts`
-   - Added `getAllUsers` controller in `api/src/controllers/userController.ts`
-   - Registered `GET /api/getAllUsers` route in `api/src/app.ts`
-
-9. **`c2ad93f` — Add README.md**
-   - Created `README.md` with project overview, setup instructions, API reference
-
-10. **`71f165a` — feat: add database schema SQL file**
-    - Added `api/src/config/sql_schema.sql` — creates `twitter_db` database
-    - Tables: `users`, `tweets`, `followers`, `tweet_likes`
-
-11. **`cd0428f` — feat: add mock data SQL file**
-    - Added `api/src/config/sql_mock_data.sql` — 5 sample users, 15 tweets, likes, follows
-
-12. **`69e6209` — docs: add database setup and getAllUsers to README**
-    - Updated `README.md` with database setup instructions
-    - Added `GET /api/getAllUsers` to the API reference table
-
-**What's still missing (good first issues!):**
-
-- No test files or test framework
-- No lint/format scripts
-- No CI pipeline
-- No rate limiting or password hashing
+(Previous history — see git log for details.)

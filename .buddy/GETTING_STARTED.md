@@ -42,6 +42,8 @@ This adds 5 users, 15 tweets, likes, and follow relationships so you can test th
 pnpm install
 ```
 
+This also runs `pnpm prepare` which installs Husky git hooks automatically.
+
 ## Configure environment
 
 ```bash
@@ -100,6 +102,35 @@ pnpm start
 
 Runs `node api/dist/index.js` (API only — the app is served by Vite in dev or a static server in production).
 
+## Lint and format
+
+```bash
+pnpm lint          # ESLint on both api/ and app/
+pnpm lint:fix      # ESLint with auto-fix
+pnpm format        # Prettier — writes formatting to all source files
+pnpm format:check  # Prettier — checks formatting (for CI)
+```
+
+**ESLint rule to remember**: exports must be at the **end** of the file. Don't write `export function foo()` — write `function foo()` then `export { foo }` at the bottom.
+
+## Run tests
+
+```bash
+# First, make sure the database is set up and the dev servers can start
+npx playwright test                        # Run all E2E tests
+npx playwright test --headed               # Run with visible browser
+npx playwright test tests/auth.spec.ts     # Run a specific test file
+npx playwright test --ui                   # Open Playwright UI mode
+```
+
+Playwright config in `playwright.config.ts` automatically:
+
+- Starts the API dev server (`pnpm dev:api`) on port 4000
+- Starts the App dev server (`pnpm dev:app`) on port 5173
+- Waits for both before running tests
+
+Tests run against Chromium, Firefox, and WebKit by default.
+
 ## Quick smoke test (using curl)
 
 Open a new terminal and try these:
@@ -130,6 +161,8 @@ curl -X POST http://localhost:4000/api/tweets \
 | `Unknown database 'twitter_db'`          | Run `mysql -u root < api/src/config/sql_schema.sql` to create the database and tables.                                             |
 | `ERR_MODULE_NOT_FOUND` for `.js` imports | This is an ESM project. All local imports use `.js` extensions. That's correct — `tsx` and `tsc` handle the `.ts` → `.js` mapping. |
 | `SyntaxError` on startup                 | Make sure you have Node 18+ (uses `crypto.randomUUID()`).                                                                          |
+| Playwright tests can't connect           | Make sure MySQL is running with the correct schema. Playwright auto-starts the dev servers.                                        |
+| ESLint error about exports               | Move exports to the end of the file. Inline `export function` is not allowed.                                                      |
 
 ## Where things live
 
@@ -139,4 +172,6 @@ curl -X POST http://localhost:4000/api/tweets \
 - **Database schema:** `api/src/config/sql_schema.sql`
 - **Mock data:** `api/src/config/sql_mock_data.sql`
 - **API testing:** `.postman-collection/twitter-clone-api.postman_collection.json`
-- **Agent configs:** `.opencode/agents/buddy.md`
+- **E2E tests:** `tests/` directory
+- **Agent configs:** `.opencode/agents/buddy.md`, `.claude/agents/buddy.md`, `.github/agents/buddy.md`
+- **Frontend spec:** `app/specs/refactor.md` (describes the "Chirp" redesign)
