@@ -3,9 +3,8 @@ import { createTweet, deleteTweet, likeTweet, unlikeTweet } from '../api/client'
 
 function useCreateTweet() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (tweet_text: string) => createTweet(tweet_text),
+    mutationFn: (text: string) => createTweet(text),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['feed'] });
     },
@@ -14,7 +13,6 @@ function useCreateTweet() {
 
 function useDeleteTweet() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id: number) => deleteTweet(id),
     onSuccess: () => {
@@ -25,7 +23,6 @@ function useDeleteTweet() {
 
 function useLikeTweet() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id: number) => likeTweet(id),
     onSuccess: () => {
@@ -36,7 +33,6 @@ function useLikeTweet() {
 
 function useUnlikeTweet() {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id: number) => unlikeTweet(id),
     onSuccess: () => {

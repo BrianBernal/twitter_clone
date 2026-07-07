@@ -1,40 +1,32 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { signin, signout, signup, setToken, clearToken } from '../api/client';
+import { signin, signup, signout, setToken, clearToken } from '../api/client';
+import type { User } from '../api/types';
 
-function useSignup() {
+function useSignin() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: ({
-      user_handle,
-      email_address,
-      first_name,
-      last_name,
-    }: {
-      user_handle: string;
-      email_address: string;
-      first_name: string;
-      last_name: string;
-    }) => signup(user_handle, email_address, first_name, last_name),
-    onSuccess: (res) => {
-      setToken(res.data.session_token);
-      queryClient.invalidateQueries({ queryKey: ['auth'] });
+    mutationFn: (email: string) => signin(email),
+    onSuccess: (data) => {
+      setToken(data.data.session_token);
+      localStorage.setItem('twitter_clone_user', JSON.stringify(data.data.user));
       navigate({ to: '/' });
     },
   });
 }
 
-function useSignin() {
+function useSignup() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: ({ email_address }: { email_address: string }) => signin(email_address),
-    onSuccess: (res) => {
-      setToken(res.data.session_token);
-      queryClient.invalidateQueries({ queryKey: ['auth'] });
+    mutationFn: (params: {
+      user_handle: string;
+      email_address: string;
+      first_name: string;
+      last_name: string;
+    }) => signup(params.user_handle, params.email_address, params.first_name, params.last_name),
+    onSuccess: (data) => {
+      setToken(data.data.session_token);
+      localStorage.setItem('twitter_clone_user', JSON.stringify(data.data.user));
       navigate({ to: '/' });
     },
   });
@@ -42,16 +34,23 @@ function useSignin() {
 
 function useSignout() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: signout,
+    mutationFn: () => signout(),
     onSuccess: () => {
       clearToken();
-      queryClient.clear();
+      localStorage.removeItem('twitter_clone_user');
       navigate({ to: '/signin' });
     },
   });
 }
 
-export { useSignup, useSignin, useSignout };
+function getStoredUser(): User | null {
+  try {
+    const stored = localStorage.getItem('twitter_clone_user');
+    return stored ? JSON.parse(stored) : null;
+  } catch {
+    return null;
+  }
+}
+
+export { useSignin, useSignup, useSignout, getStoredUser };

@@ -3,9 +3,9 @@ import {
   getUser,
   getUserFollowers,
   getUserFollowing,
+  getAllUsers,
   followUser,
   unfollowUser,
-  getAllUsers,
 } from '../api/client';
 
 function useUser(id: number) {
@@ -35,28 +35,28 @@ function useUserFollowing(id: number) {
 function useAllUsers() {
   return useQuery({
     queryKey: ['users'],
-    queryFn: getAllUsers,
+    queryFn: () => getAllUsers(),
   });
 }
 
 function useFollowUser() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (followingId: number) => followUser(followingId),
+    mutationFn: (id: number) => followUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 }
 
 function useUnfollowUser() {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (followingId: number) => unfollowUser(followingId),
+    mutationFn: (id: number) => unfollowUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 }

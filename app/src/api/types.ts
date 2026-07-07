@@ -33,4 +33,4 @@ interface ApiError {
   error: string;
 }
 
-export { User, Tweet, AuthResponse, ApiResponse, ApiError };
+export type { User, Tweet, AuthResponse, ApiResponse, ApiError };

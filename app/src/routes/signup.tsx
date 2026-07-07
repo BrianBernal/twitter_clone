@@ -1,72 +1,127 @@
 import { useState } from 'react';
-import { createFileRoute, Navigate, Link } from '@tanstack/react-router';
-import { getToken } from '../api/client';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useSignup } from '../hooks/useAuth';
 
 const Route = createFileRoute('/signup')({
-  component: SignupPage,
+  component: SignUpPage,
 });
 
-function SignupPage() {
-  const [user_handle, setUserHandle] = useState('');
-  const [email_address, setEmailAddress] = useState('');
-  const [first_name, setFirstName] = useState('');
-  const [last_name, setLastName] = useState('');
+function SignUpPage() {
+  const [form, setForm] = useState({
+    user_handle: '',
+    email_address: '',
+    first_name: '',
+    last_name: '',
+  });
   const signup = useSignup();
 
-  if (getToken()) {
-    return <Navigate to="/" />;
-  }
+  const updateField = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    signup.mutate({ user_handle, email_address, first_name, last_name });
+    if (
+      !form.user_handle.trim() ||
+      !form.email_address.trim() ||
+      !form.first_name.trim() ||
+      !form.last_name.trim()
+    )
+      return;
+    signup.mutate(form);
   };
 
   return (
-    <div>
-      <h2>Sign up</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-primary mb-2">Join Chirp</h1>
+        <p className="text-text-secondary">Create your account</p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
+          <label htmlFor="handle" className="block text-text-secondary text-sm mb-1">
+            Handle
+          </label>
           <input
-            placeholder="Handle"
-            value={user_handle}
-            onChange={(e) => setUserHandle(e.target.value)}
+            id="handle"
+            type="text"
+            value={form.user_handle}
+            onChange={(e) => updateField('user_handle', e.target.value)}
+            placeholder="yourhandle"
             required
+            className="w-full bg-surface-2 text-text-primary border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors placeholder-text-secondary"
           />
         </div>
+
         <div>
+          <label htmlFor="email" className="block text-text-secondary text-sm mb-1">
+            Email
+          </label>
           <input
-            placeholder="First name"
-            value={first_name}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <input
-            placeholder="Last name"
-            value={last_name}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <input
+            id="email"
             type="email"
-            placeholder="Email"
-            value={email_address}
-            onChange={(e) => setEmailAddress(e.target.value)}
+            value={form.email_address}
+            onChange={(e) => updateField('email_address', e.target.value)}
+            placeholder="you@example.com"
             required
+            className="w-full bg-surface-2 text-text-primary border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors placeholder-text-secondary"
           />
         </div>
-        {signup.error && <p style={{ color: 'red' }}>{signup.error.message}</p>}
-        <button type="submit" disabled={signup.isPending}>
-          {signup.isPending ? 'Creating account...' : 'Sign up'}
+
+        <div className="flex gap-3">
+          <div className="flex-1">
+            <label htmlFor="firstName" className="block text-text-secondary text-sm mb-1">
+              First name
+            </label>
+            <input
+              id="firstName"
+              type="text"
+              value={form.first_name}
+              onChange={(e) => updateField('first_name', e.target.value)}
+              placeholder="First"
+              required
+              className="w-full bg-surface-2 text-text-primary border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors placeholder-text-secondary"
+            />
+          </div>
+          <div className="flex-1">
+            <label htmlFor="lastName" className="block text-text-secondary text-sm mb-1">
+              Last name
+            </label>
+            <input
+              id="lastName"
+              type="text"
+              value={form.last_name}
+              onChange={(e) => updateField('last_name', e.target.value)}
+              placeholder="Last"
+              required
+              className="w-full bg-surface-2 text-text-primary border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors placeholder-text-secondary"
+            />
+          </div>
+        </div>
+
+        {signup.error && <p className="text-secondary text-sm">{signup.error.message}</p>}
+
+        <button
+          type="submit"
+          disabled={
+            !form.user_handle.trim() ||
+            !form.email_address.trim() ||
+            !form.first_name.trim() ||
+            !form.last_name.trim() ||
+            signup.isPending
+          }
+          className="w-full bg-primary text-white font-bold py-3 rounded-full hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {signup.isPending ? 'Creating account...' : 'Sign Up'}
         </button>
       </form>
-      <p>
-        Already have an account? <Link to="/signin">Sign in</Link>
+
+      <p className="mt-8 text-center text-text-secondary text-sm">
+        Already have an account?{' '}
+        <Link to="/signin" className="text-primary hover:underline font-bold">
+          Sign in
+        </Link>
       </p>
     </div>
   );
