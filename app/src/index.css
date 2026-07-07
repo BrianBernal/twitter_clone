@@ -13,8 +13,20 @@
   --color-border: #2f3336;
   --color-success: #00ba7c;
   --font-sans: 'Inter', sans-serif;
+  --animate-slide-in: slide-in 0.3s ease-out;
   --font-mono: 'JetBrains Mono', monospace;
   --radius-default: 8px;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 body {

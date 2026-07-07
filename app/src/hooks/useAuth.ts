@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { signin, signup, signout, setToken, clearToken } from '../api/client';
 import type { User } from '../api/types';
+import { useToast } from '../components/ui/Toast';
 
 function useSignin() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ function useSignup() {
 
 function useSignout() {
   const navigate = useNavigate();
+  const toast = useToast();
   return useMutation({
     mutationFn: () => signout(),
     onSuccess: () => {
@@ -41,6 +43,7 @@ function useSignout() {
       localStorage.removeItem('twitter_clone_user');
       navigate({ to: '/signin' });
     },
+    onError: (e) => toast.show(e.message),
   });
 }
 

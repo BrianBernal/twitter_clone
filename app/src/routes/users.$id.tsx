@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { createFileRoute, redirect, Link } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { useUser, useUserFollowers, useUserFollowing } from '../hooks/useUsers';
 import { getStoredUser } from '../hooks/useAuth';
+import { useToast } from '../components/ui/Toast';
 
 const Route = createFileRoute('/users/$id')({
   beforeLoad: () => {
@@ -14,13 +16,26 @@ function UserProfilePage() {
   const { id } = Route.useParams();
   const userId = Number(id);
   const currentUser = getStoredUser();
-  const { data: userData, isLoading } = useUser(userId);
-  const { data: followersData } = useUserFollowers(userId);
-  const { data: followingData } = useUserFollowing(userId);
+  const toast = useToast();
+  const { data: userData, isLoading, error: userError } = useUser(userId);
+  const { data: followersData, error: followersError } = useUserFollowers(userId);
+  const { data: followingData, error: followingError } = useUserFollowing(userId);
   const user = userData?.data;
   const followers = followersData?.data ?? [];
   const following = followingData?.data ?? [];
   const isOwnProfile = currentUser?.user_id === userId;
+
+  useEffect(() => {
+    if (userError) toast.show(userError.message);
+  }, [userError, toast]);
+
+  useEffect(() => {
+    if (followersError) toast.show(followersError.message);
+  }, [followersError, toast]);
+
+  useEffect(() => {
+    if (followingError) toast.show(followingError.message);
+  }, [followingError, toast]);
 
   if (isLoading) {
     return (

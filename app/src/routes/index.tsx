@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { useFeed } from '../hooks/useFeed';
 import TweetCard from '../components/tweets/TweetCard';
 import ComposeModal from '../components/tweets/ComposeModal';
+import { useToast } from '../components/ui/Toast';
 
 const Route = createFileRoute('/')({
   beforeLoad: () => {
@@ -15,9 +16,14 @@ const Route = createFileRoute('/')({
 });
 
 function FeedPage() {
+  const toast = useToast();
   const [composeOpen, setComposeOpen] = useState(false);
   const feed = useFeed();
   const tweets = feed.data?.pages.flatMap((page) => page.data) ?? [];
+
+  useEffect(() => {
+    if (feed.error) toast.show(feed.error.message);
+  }, [feed.error, toast]);
 
   return (
     <div>

@@ -7,6 +7,7 @@ import {
   followUser,
   unfollowUser,
 } from '../api/client';
+import { useToast } from '../components/ui/Toast';
 
 function useUser(id: number) {
   return useQuery({
@@ -41,23 +42,27 @@ function useAllUsers() {
 
 function useFollowUser() {
   const queryClient = useQueryClient();
+  const toast = useToast();
   return useMutation({
     mutationFn: (id: number) => followUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       queryClient.invalidateQueries({ queryKey: ['users'] });
     },
+    onError: (e) => toast.show(e.message),
   });
 }
 
 function useUnfollowUser() {
   const queryClient = useQueryClient();
+  const toast = useToast();
   return useMutation({
     mutationFn: (id: number) => unfollowUser(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       queryClient.invalidateQueries({ queryKey: ['users'] });
     },
+    onError: (e) => toast.show(e.message),
   });
 }
 

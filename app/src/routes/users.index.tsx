@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { createFileRoute, redirect, Link } from '@tanstack/react-router';
 import { getToken } from '../api/client';
 import { useAllUsers } from '../hooks/useUsers';
 import { getStoredUser } from '../hooks/useAuth';
+import { useToast } from '../components/ui/Toast';
 
 const Route = createFileRoute('/users/')({
   beforeLoad: () => {
@@ -12,8 +14,13 @@ const Route = createFileRoute('/users/')({
 
 function UsersPage() {
   const currentUser = getStoredUser();
-  const { data, isLoading } = useAllUsers();
+  const toast = useToast();
+  const { data, isLoading, error } = useAllUsers();
   const users = (data?.data ?? []).filter((u) => u.user_id !== currentUser?.user_id);
+
+  useEffect(() => {
+    if (error) toast.show(error.message);
+  }, [error, toast]);
 
   return (
     <div>

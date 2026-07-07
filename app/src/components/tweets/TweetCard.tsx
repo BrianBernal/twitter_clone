@@ -28,8 +28,18 @@ function TweetCard({ tweet }: TweetCardProps) {
   const isOwner = currentUser?.user_id === tweet.user_id;
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(tweet.likes_count);
-  const likeTweet = useLikeTweet();
-  const unlikeTweet = useUnlikeTweet();
+  const likeTweet = useLikeTweet({
+    onError: () => {
+      setLiked(false);
+      setLikeCount((c) => Math.max(0, c - 1));
+    },
+  });
+  const unlikeTweet = useUnlikeTweet({
+    onError: () => {
+      setLiked(true);
+      setLikeCount((c) => c + 1);
+    },
+  });
   const deleteTweet = useDeleteTweet();
 
   const handleLike = () => {
